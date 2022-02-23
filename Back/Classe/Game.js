@@ -4,6 +4,10 @@ class Game{
         for(let i=0;i<10;i++){
             grille[i]= new Array(10);
         }
+
+        for(let i = 0;i<10;i++){
+
+        }
         return grille;
     }
 
@@ -16,6 +20,19 @@ class Game{
         this.time = now.getMinutes() * 60 + now.getSeconds() ;
         this.winner = undefined;
         this.turn = 1;
+        this.arme = 1;
+        this.radarUsed=false; 
+        this.torpilleUsed=false;
+        this.bombeAFragUsed=false;
+    }
+
+    /*************************************** */
+    getArme(){
+        return this.arme;
+    }
+/********************************************* */
+    setArme(nb){
+        this.arme = nb;
     }
 
     getjoueur1(){
@@ -32,10 +49,44 @@ class Game{
 
     setCase(x,y,content){
         this.grille[x][y]=content;
+        /*************************** */
+        //Changer l'apparence de la grille
+        this.printCase(x,y,content);
     }
 
     getCase(x,y){
         return this.grille[x][y];
+    }
+
+    /***************************** */
+    printCase(x,y,nb){
+
+        switch(nb){
+            case 0:
+                document.getElementById("case"+x+"-"+y).textContent = 0;
+                break;
+            case 1:
+                document.getElementById("case"+x+"-"+y).textContent = 1;
+                break;
+            case 2:
+                document.getElementById("case"+x+"-"+y).textContent = 2;
+                break;
+            case 3:
+                document.getElementById("case"+x+"-"+y).textContent = 3;
+                break;
+            case 4:
+                document.getElementById("case"+x+"-"+y).textContent = 4;
+                break;
+            case 5:
+                document.getElementById("case"+x+"-"+y).textContent = 5;
+                break;
+            case 6:
+                document.getElementById("case"+x+"-"+y).textContent = 6;
+                break;
+            case 7:
+                document.getElementById("case"+x+"-"+y).textContent = 7;
+                break;
+        }
     }
 
     isCaseEmpty(x,y){
@@ -55,78 +106,130 @@ class Game{
         console.log(this.grille);
     }
 
-    //Fonction qui gère toutes les résultats d'attaque possible, que ce soit victoire, défaire, égalité ou cas spéciaux.
-    attack(start,end,player){
-        let s = parseInt(start)
-        let e = parseInt(end)
-        this.turn = this.turn %2 +1;
-        if(this.grille[Math.trunc(s/10)][s%10].getForce() == 3 && this.grille[Math.trunc(e/10)][e%10].getForce() == 100 ){
-            if(player === 1){
-                this.joueur2.tableOfShip = this.joueur2.decrNombreRestantDuType('100')
+    /***********************armes**********************************/
+    missile(x,y){
+        if (this.isCaseEmpty(x,y)==true)
+        {
+            this.setCase(x,y,2); //2 pour dire qu'on a touché mais qu'il y avait rien
+            return this.getCase(x,y);
+        }
+        else{
+            this.setCase(x,y,1); //1 quand on a touché mais qu'il y avait un bateau 
+                                //ne pas oublier de gérer les autres numéros pour les autres bateaux
+            return this.getCase(x,y);
+        }
+    }
+
+    radar(x,y){
+        if(this.radarUsed!=true){
+            this.radarUsed=true;
+            for(i=this.grid[y-1];i=this.grid[y+1];i++){
+                for(j=this.grid[x-1];j=this.grid[x+1];j++){
+
+                    if(this.isCaseEmpty(x,y)!=true){ 
+                        //récuperer les coord du bateau grace au serv
+                        //print bateau à la coord récupérée
+
+                    }
+                    
+                }
+            }
+        }
+        else{
+            alert("Radar déjà utlisé.");
+        }
+    }
+
+    torpille(x,y){
+        if(this.torpilleUsed!=true){
+            this.torpilleUsed=true;
+            let torpilleAttack=false;
+
+            if (this.isCaseEmpty(x,y)==true){ //récup les coords du serv
+                this.setCase(x,y,2); 
+                this.getCase(x,y);
             }
             else{
-                this.joueur1.tableOfShip = this.joueur1.decrNombreRestantDuType('100')
+                this.setCase(x,y,1); 
+                this.getCase(x,y);
             }
-            this.grille[Math.trunc(e/10)][e%10] = this.grille[Math.trunc(s/10)][s%10];
-            this.grille[Math.trunc(e/10)][e%10].discovered = true;
-            this.grille[Math.trunc(s/10)][s%10] = null;
-            return [1,100];
+
+            if(torpilleAttack!=true){
+                for(i=this.grid[y-1];i=this.grid[y+1];i++){
+                    for(j=this.grid[x-1];j=this.grid[x+1];j++){
+
+                        if (this.isCaseEmpty(x,y)==true){
+                            this.setCase(x,y,2); 
+                            this.getCase(x,y); //sert à rien, il faudra remplacer par un renvoi au serveur de 
+                                              //la case; ici le getcase ME renvoie la case
+                        }
+                        else{ //Gérer pour les différents bateaux donc else if case =2, 4, 5, etc pour pas
+                              //que même s'il y a d'autres bateaux ils soient tapés aussi
+                            this.setCase(x,y,1); 
+                            this.getCase(x,y);
+                        }
+
+                    
+                    }
+                }
+                        
+            }
         }
-        else if(this.grille[Math.trunc(s/10)][s%10].getForce() == 1 && this.grille[Math.trunc(e/10)][e%10].getForce() == 10 ){
-            if(player == 1){
-                this.joueur2.tableOfShip = this.joueur2.decrNombreRestantDuType('10')
+    }
+
+    bombeAFrag(x,y){
+        if(this.bombeAFragUsed!=true){
+            this.bombeAFragUsed=true;
+            for(i=this.grid[y-1];i=this.grid[y+1];i++){
+                for(j=this.grid[x-1];j=this.grid[x+1];j++){
+                    if(i==this.grid[y]||j==this.grid[x]){
+
+                        if (this.isCaseEmpty(x,y)==true){
+                            this.setCase(x,y,2); 
+                            this.getCase(x,y);
+                        }
+                        else{ 
+                            this.setCase(x,y,1); 
+                            this.getCase(x,y);
+                        }
+                    }
+
+                
+                }
             }
-            else{
-                this.joueur1.tableOfShip = this.joueur1.decrNombreRestantDuType('10')
-            }
-            this.grille[Math.trunc(e/10)][e%10] = this.grille[Math.trunc(s/10)][s%10];
-            this.grille[Math.trunc(e/10)][e%10].discovered = true;
-            this.grille[Math.trunc(s/10)][s%10] = null;
-            return [1,10];
-        }
-        else if(parseInt(this.grille[Math.trunc(s/10)][s%10].getForce()) < parseInt(this.grille[Math.trunc(e/10)][e%10].getForce())){
-            let looser = this.grille[Math.trunc(s/10)][s%10].getForce();
-            if(player == 1){
-                this.joueur1.tableOfShip = this.joueur1.decrNombreRestantDuType(this.grille[Math.trunc(s/10)][s%10].getForce())
-            }
-            else{
-                this.joueur2.tableOfShip = this.joueur2.decrNombreRestantDuType(this.grille[Math.trunc(s/10)][s%10].getForce())
-            }
-            this.grille[Math.trunc(s/10)][s%10] = null;
-            this.grille[Math.trunc(e/10)][e%10].discovered = true;
-            return [-1,looser];
-        }
-        else if(parseInt(this.grille[Math.trunc(s/10)][s%10].getForce()) === parseInt(this.grille[Math.trunc(e/10)][e%10].getForce())){
-            let looser = this.grille[Math.trunc(s/10)][s%10].getForce();
-            this.joueur1.tableOfShip = this.joueur1.decrNombreRestantDuType(this.grille[Math.trunc(s/10)][s%10].getForce())
-            this.joueur2.tableOfShip = this.joueur2.decrNombreRestantDuType(this.grille[Math.trunc(e/10)][e%10].getForce())
-            this.grille[Math.trunc(s/10)][s%10] = null;
-            this.grille[Math.trunc(e/10)][e%10] = null;
-            return [0,looser]
-        }
-        else if(parseInt(this.grille[Math.trunc(start/10)][start%10].force) > parseInt(this.grille[Math.trunc(e/10)][e%10].force)){
-            let looser = this.grille[Math.trunc(e/10)][e%10].force;
-            if(player == 1){
-                this.joueur2.tableOfShip = this.joueur2.decrNombreRestantDuType(this.grille[Math.trunc(e/10)][e%10].force)
-            }
-            else{
-                this.joueur1.tableOfShip = this.joueur1.decrNombreRestantDuType(this.grille[Math.trunc(e/10)][e%10].force)
-            }
-            this.grille[Math.trunc(e/10)][e%10] = this.grille[Math.trunc(s/10)][s%10];
-            this.grille[Math.trunc(e/10)][e%10].discovered = true;
-            this.grille[Math.trunc(s/10)][s%10] = null;
-            return [1,looser];
         }
 
     }
+/****************************************************** */
 
-    move(start,end,player){
-        let s = parseInt(start)
-        let e = parseInt(end)
-        this.turn = this.turn %2 +1;
-        this.grille[Math.trunc(e/10)][e%10] = this.grille[Math.trunc(s/10)][s%10];
-        this.grille[Math.trunc(s/10)][s%10] = null;
+    /******************************************* */
+    attack(coord, arme){
+        console.log("Coordonnées : "+coord+"- Arme = "+arme);
+        //envoyer au serveur
     }
+
+    /************************************ */
+    resultAttack(coord,resultAtk,destroyed){
+
+        if(resultAtk == true){
+
+            if(destroyed == true/*ou mettre numéro du bateau (0 si pas détruit)*/){
+                
+                //Demander co du bateau au serveur
+                //Afficher bateau barré (setCase())
+                
+            } 
+            else{
+                
+                //setCase(x,y,numéro bateau barré)
+            }
+        }
+    }
+
+    defense(){
+
+    }
+
 
     isFinished(){
 
@@ -195,4 +298,4 @@ class Game{
     }
 }
 
-module.exports = Game;
+//module.exports = Game;
