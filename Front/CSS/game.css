@@ -1,0 +1,17 @@
+img{
+    width: 80px;
+}
+
+table, th, td {
+    border-collapse: collapse;
+    border: solid 1px white;
+    background-color: #64cbd3;
+    padding: 0px;
+
+    margin: auto;
+}
+
+body{
+    width: 80%;
+    margin: auto;
+}
