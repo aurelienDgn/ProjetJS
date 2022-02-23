@@ -1,14 +1,20 @@
 img{
     width: 80px;
+    height: 80px;
+    position: absolute;
 }
 
 table, th, td {
     border-collapse: collapse;
     border: solid 1px white;
-    background-color: #64cbd3;
     padding: 0px;
 
     margin: auto;
+}
+
+td{
+    width: 80px;
+    height: 80px;
 }
 
 body{
