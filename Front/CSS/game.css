@@ -1,7 +1,23 @@
+header{
+    background-color: #65CBD3;
+}
+
+h1 a
+{
+    font-family: 'Permanent Marker', cursive;
+    color: #A67D52;
+    margin: 0px 30px;
+}
+
+h1 a:hover{
+    text-decoration: none;
+    color: #9b6c3a;
+}
+
 img{
     width: 80px;
     height: 80px;
-    position: absolute;
+    /*position: absolute;*/
 }
 
 table, th, td {
@@ -15,9 +31,4 @@ table, th, td {
 td{
     width: 80px;
     height: 80px;
-}
-
-body{
-    width: 80%;
-    margin: auto;
 }

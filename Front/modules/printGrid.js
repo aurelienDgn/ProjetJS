@@ -33,9 +33,12 @@ let createGrid = (function(){
         for(let j=0;j<9;j++){
             let td1 = document.createElement("td");
             td1.id = "case"+i+"-"+j;
+
+            // On ajoute les images en fond
+            td1.innerHTML = "<img alt='water' src='../Images/sea.png'>";
             
             // On ajoute événement('click') lorsque l'on clique sur la cellule
-            listeners.add(td1,game.attack,[j,i]);
+            /*listeners.add(td1,game.attack,[j,i]);*/
 
             tr.appendChild(td1);
         }
