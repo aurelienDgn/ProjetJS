@@ -7,35 +7,67 @@
 
     <link rel="stylesheet" type="text/css" href="../CSS/game.css"/>
 
-    <title>BattleShip</title>
+    <title>BattleCheap</title>
 </head>
 
 <body>
+    <header>
+        <h1>BatlleCheap</h1>
+    </header>
     
+    <main>
+        <table id="grid"></table>
+    </main>
+
     <script>
-        table = document.createElement('table');
         for(let i = 0; i < 10; i++){
-            let newRow = table.insertRow();
+            let newRow = document.createElement("tr");
+
             for (let j = 0; j < 10; j++){
-                let newCell = newRow.insertCell();
+                let newCell = document.createElement("td");
 
                 if (i == 0 && j == 0){
-                    newCell.innerHTML = "<img alt='raft' src='../Images/raft1.png'>";
+                    newCell.innerHTML = "<img alt='boat2' src='../Images/boat2.1.png'>";
                 } else if(i == 1 && j == 0){
-                    newCell.innerHTML = "<img alt='raft' src='../Images/raft2.png'>";
-                } else if (i == 1 && j == 1){
-                    newCell.innerHTML = "<img alt='barque' src='../Images/barque1.png'>";
-                } else if(i == 2 && j == 1){
-                    newCell.innerHTML = "<img alt='raft' src='../Images/barque2.png'>";
-                } else if(i == 3 && j == 1){
-                    newCell.innerHTML = "<img alt='raft' src='../Images/barque3.png'>";
+                    newCell.innerHTML = "<img alt='boat2' src='../Images/boat2.2.png'>";
+
+                } else if (i == 0 && j == 2){
+                    newCell.innerHTML = "<img alt='boat3' src='../Images/boat3.1.png'>";
+                } else if(i == 1 && j == 2){
+                    newCell.innerHTML = "<img alt='boat3' src='../Images/boat3.2.png'>";
+                } else if(i == 2 && j == 2){
+                    newCell.innerHTML = "<img alt='boat3' src='../Images/boat3.3.png'>";
+
+                } else if (i == 0 && j == 4){
+                    newCell.innerHTML = "<img alt='boat4' src='../Images/boat4.1.png'>";
+                } else if(i == 1 && j == 4){
+                    newCell.innerHTML = "<img alt='boat4' src='../Images/boat4.2.png'>";
+                } else if(i == 2 && j == 4){
+                    newCell.innerHTML = "<img alt='boat4' src='../Images/boat4.3.png'>";
+                } else if(i == 3 && j == 4){
+                    newCell.innerHTML = "<img alt='boat4' src='../Images/boat4.4.png'>";
+
+                } else if (i == 0 && j == 6){
+                    newCell.innerHTML = "<img alt='boat5' src='../Images/boat5.1.png'>";
+                } else if(i == 1 && j == 6){
+                    newCell.innerHTML = "<img alt='boat5' src='../Images/boat5.2.png'>";
+                } else if(i == 2 && j == 6){
+                    newCell.innerHTML = "<img alt='boat5' src='../Images/boat5.3.png'>";
+                } else if(i == 3 && j == 6){
+                    newCell.innerHTML = "<img alt='boat5' src='../Images/boat5.2.png'>";
+                } else if(i == 4 && j == 6){
+                    newCell.innerHTML = "<img alt='boat5' src='../Images/boat5.4.png'>";
+                
                 } else {
                     newCell.innerHTML = "<img alt='water' src='../Images/sea.png'>";
                 }
+
+                newRow.appendChild(newCell);
             }
+
+            document.getElementById('grid').appendChild(newRow);
         }
-        
-        document.body.appendChild(table);
     </script>
+
 </body>
 </html>
