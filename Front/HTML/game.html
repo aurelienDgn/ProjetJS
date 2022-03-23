@@ -11,7 +11,7 @@
     <!-- include font-->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Teko&display=swap" rel="stylesheet">
 
     <!-- include css-->
     <link rel="stylesheet" type="text/css" href="../CSS/game.css" />
@@ -21,28 +21,18 @@
 
 <body>
     <header class="d-flex row align-items-center">
-        <h1 class="col-7"><a href="./index.html">BattleCheap</a></h1>
+        <h1 class="col-11"><a href="./index.html">BattleCheap</a></h1>
     </header>
 
-    <main>
-        <!--<script>
-            table = document.createElement('table');
-            for(let i = 0; i < 10; i++){
-                let newRow = table.insertRow();
-                for (let j = 0; j < 10; j++){
-                    let newCell = newRow.insertCell();
-                    newCell.innerHTML = "<img alt='water' src='../Images/sea.png'>";
-                }
-            }
-            
-            document.body.getElementByTagName("main").appendChild(table);
-        </script>-->
+    <main class="d-flex flex-row">
+        <aside class="d-flex flex-column justify-content-around">
+            <button id="missile" class="btn btn-dark">Missile</button>
+            <button id="torpille" class="btn btn-dark">Torpille</button>
+            <button id="radar" class="btn btn-dark">Radar</button>
+            <button id="bombe" class="btn btn-dark">Bombe à Fragment</button>
+        </aside>
+
         <table id="grid"></table>
-    
-        <button id="missile">Missile</button>
-        <button id="torpille">Torpille</button>
-        <button id="radar">Radar</button>
-        <button id="bombe">Bombe à Fragment</button>
 
         <!-- include modules-->
         <script type="text/javascript" src="../modules/printGrid.js"></script>
