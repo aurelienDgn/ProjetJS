@@ -45,6 +45,10 @@ main{
     font-size: 2rem;
 }
 
+.gif{
+    margin-left: 40%;
+}
+
 footer{
     padding-left: 20px;
     font-style: italic;

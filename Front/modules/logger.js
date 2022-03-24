@@ -4,7 +4,7 @@ let logger = (function(){
         console.log('username :', username);
         $.ajax({
             type: "POST",
-            url: "/login",
+            url: "/signin",
             data: {
                 login: username,
             },
@@ -12,7 +12,7 @@ let logger = (function(){
                 if(window.location.pathname === '/'){
                     window.location.href="/waitingRoom";
                 }
-                else if(window.location.pathname === '/login' || window.location.pathname === '/register'){
+                else if(window.location.pathname === '/signin' || window.location.pathname === '/signup'){
                     window.location.href="/";
                 }
             },

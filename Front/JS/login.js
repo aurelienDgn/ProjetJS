@@ -1,25 +1,34 @@
-let form = document.getElementById("log-form");
-let inputUser = document.getElementById("username");
-let inputPass = document.getElementById("password");
+let SignIn = document.getElementById("signIn");
+let User = document.getElementById("Username");
+let Pass = document.getElementById("Password");
+var Alert = false;                  //Me demandez pas pourquoi cette variable existe.
 
-form.addEventListener('submit', event => {
+
+SignIn.addEventListener('submit', event => {
     event.preventDefault();
 
-    socket.emit("password", [inputUser.value]);
-    socket.on("resultPass", res => {                // On demande au serveur de regarder si le pseudo existe
-        if (res.length){
-            socket.emit("decrypt", [inputPass.value, res]);         //si oui, on verifie que le mot de passe est le bon
+    console.log("Valeur du user et du password après submit", User.value, Pass.value);
+
+    socket.emit("password", [User.value]);
+    socket.on("resultPass", res => {
+        if (res.length) {
+            socket.emit("decrypt", [Pass.value, res]);
             socket.on("resultDecrypt", result => {
-                if(result){
-                    logger.sendLogin(inputUser.value);              //et on connecte l'utilisateur
+                if (result) {
+                    logger.sendLogin(User.value);          //Petite connexion qui fait plaisir
+                    window.location.href = "/";
                 }
-                else {
-                    alert('Mot de passe incorrect.')
+                else if (!result && Alert === false) {
+                    alert('Mot de passe incorrect.');
+                    Alert = true;
                 }
             });
         }
-        else {
-            alert("Ce nom d'utilisateur n'existe pas.")
+        if (!res.length && Alert === false) {
+            alert("Ce nom d'utilisateur n'existe pas.");
+            Alert = true;                                       //Sans cette variable cela n'aurait pas fonctionné.
+            console.log(res.length);
         }
     });
+    Alert = false;
 });
