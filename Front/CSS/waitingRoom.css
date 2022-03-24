@@ -1,5 +1,9 @@
 html{
+<<<<<<< HEAD
     overflow: hidden;
+=======
+    overflow-x: hidden;
+>>>>>>> main
 }
 
 header{
@@ -43,6 +47,10 @@ body{
 main{
     margin: 80px 0px;
     font-size: 2rem;
+}
+
+.gif{
+    margin-left: 40%;
 }
 
 footer{

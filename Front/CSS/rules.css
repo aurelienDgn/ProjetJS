@@ -1,5 +1,9 @@
 html{
+<<<<<<< HEAD
     overflow: hidden;
+=======
+    overflow-x: hidden;
+>>>>>>> main
 }
 
 header{
@@ -38,6 +42,10 @@ body{
 
 main{
     margin: 80px 0px;
+}
+
+.boat{
+    height: 80px;
 }
 
 h2{

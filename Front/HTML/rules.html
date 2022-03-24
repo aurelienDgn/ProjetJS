@@ -22,28 +22,40 @@
 
 <body>
     <header class="d-flex row align-items-center">
-        <h1 class="col-7"><a href="./index.html">BattleCheap</a></h1>
-        <a href="./signIn.html" class="btn col-2">Connexion</a>
-        <a href="./signUp.html" class="btn col-2">Inscription</a>
+        <h1 class="col-7"><a href="/">BattleCheap</a></h1>
+        <a href="signin" class="btn col-2">Connexion</a>
+        <a href="signup" class="btn col-2">Inscription</a>
     </header>
 
     <main>
         <h2>Bienvenue sur BattleCheap !</h2>
 
-        <h3>Description :</h3>
-        <p>La bataille navale ou touché-coulé est un jeu de société commercialisé en 1831 qui se joue à deux soldats. 
+        <h3 class="mb-4 text-center">Description :</h3>
+        <p class="col-8 mx-auto mb-4">La bataille navale ou touché-coulé est un jeu de société commercialisé en 1831 qui se joue à deux soldats. 
             Le principe du jeu, si vous ne le connaissez pas, est de placer des « navires » sur une grille tenue secrète et de tenter de couler les navires adverses. 
             La partie s’arrête lorsque l’un des deux soldat a réussi à couler tous les navires de l’autre.</p>
         
-        <h3>Les navires :</h3>
-        <ul>
-            <img src="./Front/Images/ships/boat_5.png" class="navire"/> 1 porte-avion (5 cases)<br>
-            <img src="./Front/Images/ships/boat_1.png" class="navire"/> 1 croiseur (4 cases)<br>
-            <img src="./Front/Images/ships/boat_2.png" class="navire"/> 2 sous-marins (3 cases chacun)<br>
-            <img src="./Front/Images/ships/boat_3.png" class="navire"/> 1 torpilleur (2 cases)<br>
-        </ul>
+        <h3 class="mb-4 text-center">Les navires :</h3>
+        <div class="d-flex flex-column col-8 mx-auto">
+            <div class="d-flex flex-row align-items-center mb-3">
+                <img src="../Images/boat5.png" class="boat"/>
+                <p>1 disponible (5 cases)</p>
+            </div>
+            <div class="d-flex flex-row align-items-center mb-3">
+                <img src="../Images/boat4.png" class="boat"/>
+                <p>1 disponible (4 cases)</p>
+            </div>
+            <div class="d-flex flex-row align-items-center mb-3">
+                <img src="../Images/boat3.png" class="boat"/>
+                <p>2 disponibles (3 cases chacun)</p>
+            </div>
+            <div class="d-flex flex-row align-items-center mb-3">
+                <img src="../Images/boat2.png" class="boat"/>
+                <p>1 disponible (2 cases)</p>
+            </div>
+        </div>
 
-        <h3>Les armes :</h3>
+        <h3 class="mb-4 text-center">Les armes :</h3>
     </main>
 
     <footer>
