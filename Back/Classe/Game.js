@@ -106,7 +106,7 @@ class Game{
         console.log(this.grille);
     }
 
-<<<<<<< HEAD
+//<<<<<<< HEAD
     /***********************armes**********************************/
     missile(x,y){
         if (this.isCaseEmpty(x,y)==true)
@@ -230,9 +230,9 @@ class Game{
     defense(){
 
     }
-=======
+//=======
     //Fonction qui gère toutes les résultats d'attaque possible, que ce soit victoire, défaire, égalité ou cas spéciaux.
->>>>>>> main
+//>>>>>>> main
 
 
     isFinished(){

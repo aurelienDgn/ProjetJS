@@ -14,6 +14,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat&family=Permanent+Marker&display=swap" rel="stylesheet">
+
+    <!-- include socket-->
+    <script src="/socket.io/socket.io.js"></script>
     
     <!-- include css-->
     <link rel="stylesheet" type="text/css" href="../CSS/index.css"/>
@@ -23,20 +26,34 @@
 
 <body>
     <header class="d-flex row align-items-center">
+<<<<<<< HEAD
         <h1 class="col-7"><a href="./index.html">BattleCheap</a></h1>
         <a href="./signIn.html" class="btn btnHeader col-2">Connexion</a>
         <a href="./signUp.html" class="btn btnHeader col-2">Inscription</a>
+=======
+        <h1 class="col-7"><a href="/">BattleCheap</a></h1>
+        <a href="signin" id="connexion" class="btn col-2">Connexion</a>
+        <a href="signup" id="inscription" class="btn col-2">Inscription</a>
+>>>>>>> d2c3be74b1c65f3248c0540feea02cff28697c3e
     </header>
 
     <main>
         <div class="indexImg1 d-flex flex-column align-items-center">
             <h2>Bienvenue sur BattleCheap !</h2>
+<<<<<<< HEAD
             <a href="./waitingRoom.html" class="btn btn-light btn-lg btnRelative">Jouer !</a>
             <img alt="image jeu" src="../Images/image1.png">
         </div>
 
         <div class="indexImg2 d-flex justify-content-center">
             <a href="./rules.html" class="btn btn-light btn-lg">Règles du jeu</a>
+=======
+            <a href="waitingRoom" id="jouer" class="btn">Jouer !</a>
+        </div>
+
+        <div class="indexImg2 d-flex justify-content-center">
+            <a href="rules" class="btn">Règles du jeu</a>
+>>>>>>> d2c3be74b1c65f3248c0540feea02cff28697c3e
         </div>
     </main>
 
@@ -44,4 +61,6 @@
         <p>&copy; BattleCheap - Projet JS CIR2 - 2021 / 2022 - Maxime - Djallal - Enzo - Aurélien - Steeven</p>
     </footer>
 </body>
+<script>let socket = io();</script>
+<script src="../JS/home.js"></script>
 </html>
