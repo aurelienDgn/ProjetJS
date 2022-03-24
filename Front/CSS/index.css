@@ -1,5 +1,5 @@
 html{
-    overflow: hidden;
+    overflow-x: hidden;
 }
 
 header{
@@ -41,6 +41,10 @@ body{
 main{
     margin: 80px 0px;
     font-family: 'Montserrat', sans-serif;
+}
+
+img{
+    margin-bottom: 60px;
 }
 
 .btnRelative{
