@@ -15,7 +15,7 @@ const session = require("express-session")({
     }
 });
 
-var BattleCheap = require('./Back/Classe/Game.js');
+var Game = require('./Back/Classe/Game.js');
 var Player = require('./Back/Classe/Player.js');
 const sharedsession = require("express-socket.io-session");
 const bodyParser = require('body-parser');
@@ -101,6 +101,16 @@ app.get("/rules", (req, res) => {
     res.sendFile(__dirname + '/Front/HTML/rules.html');
 });
 
+// redirige vers la page des profiles du jeu si l'URL contient '/profile'
+app.get("/profile", (req, res) => {
+    res.sendFile(__dirname + '/Front/HTML/profile.html');
+});
+
+// redirige vers la page de changement de MDP si l'URL contient '/newPassword'
+app.get("/newPassword", (req, res) => {
+    res.sendFile(__dirname + '/Front/HTML/newPassword.html');
+});
+
 // redirige vers la page de jeu si l'URL contient '/game'
 app.get('/game', (req, res) => {
     // console.log("username", req.session.username, "ready", req.session.ready);
@@ -149,6 +159,7 @@ io.on('connection', (socket) => {
             socket.emit("resultUser", res);
         });
     });
+
     socket.on("password", (info) => {
         let sql = "SELECT password FROM users WHERE username = ?";
         con.query(sql, [info[0]], (err, res) => {
@@ -182,7 +193,7 @@ io.on('connection', (socket) => {
                 if (rooms[i][0] === 2) {
                     let joueur1 = new Player(rooms[socket.handshake.session.room][1])
                     let joueur2 = new Player(rooms[socket.handshake.session.room][2]);
-                    games[socket.handshake.session.room] = new BattleCheap(joueur1, joueur2);
+                    games[socket.handshake.session.room] = new Game(joueur1, joueur2);
                     games[socket.handshake.session.room].ready = 0;
                     socket.to("room" + i).emit("redirectJ1"); // Envoie uniquement à l'autre joueur cette socket
                     socket.emit("redirectJ2"); // socket envoyé uniquement à l'emetteur
