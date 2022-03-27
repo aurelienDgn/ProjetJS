@@ -1,7 +1,8 @@
 class Pion{
-    constructor(type,force,joueur,x,y){
+    constructor(type,taille,sens ,x,y){
         this.type=type; // Nom de la pièce
-        this.joueur=joueur; // Joueur auquel est rattaché cette pièce, la couleur est déductible donc l'attribut "couleur" n'existe pas
+        this.taille = taille;
+        this.sens = sens; // 1 : horizontale - 0: Verticale
 
         this.x=x; // Coordonnées en ligne de la pièce sur le plateau/grille
         this.y=y; // Coordonnées en colonne de la pièce sur le plateau/grille
@@ -11,5 +12,30 @@ class Pion{
     typeDeLaPiece(){
         return this.type;
     }
+
+    getTaille(){
+        return this.taille;
+    }
+
+    getSens(){
+        return this.sens;
+    }
+
+    setSens(s){
+        this.sens = s;
+    }
+
+    setCoord(coord){
+        this.x = coord[0];
+        this.y = coord[1];
+    }
+
+    setAlive(b){
+        this.alive = b;
+    }
+
+    getAlive(){
+        return this.alive;
+    }
 }
-module.exports = Ship;
+//module.exports = Ship;

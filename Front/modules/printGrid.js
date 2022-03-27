@@ -34,10 +34,14 @@ let createGrid = (function(){
             let td1 = document.createElement("td");
             td1.id = "case"+i+"-"+j;
 
+            td1.style.backgroundImage = "url(../Images/sea.png)";
+            td1.style.backgroundSize = "contain";
+            td1.style.backgroundRepeat = "no-repeat";
+
             // On ajoute les images en fond
             //td1.innerHTML = "<img alt='water' src='../Images/sea.png'>";
 
-            if (i == 6 && j == 1){
+            /*if (i == 6 && j == 1){
                 td1.innerHTML = "<img alt='boat2' src='../Images/vertically/boat2.1.png'>";
             } else if(i == 7 && j == 1){
                 td1.innerHTML = "<img alt='boat2' src='../Images/vertically/boat2.2.png'>";
@@ -78,10 +82,10 @@ let createGrid = (function(){
             
             } else {
                 td1.innerHTML = "<img alt='water' src='../Images/sea.png'>";
-            }
+            }*/
             
             // On ajoute événement('click') lorsque l'on clique sur la cellule
-            /*listeners.add(td1,game.attack,[j,i]);*/
+            listeners.addClick(td1,[i,j]);
 
             tr.appendChild(td1);
         }
