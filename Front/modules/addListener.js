@@ -49,11 +49,11 @@ let listeners = (function(){
         bat(){
         //Implémentation des bateaux :  
 
-        let bateau1 = new Pion("Barque", 2,0,0,0);
-        let bateau2 = new Pion("Bateau", 3,0,0,0);
-        let bateau3 = new Pion("Bateau", 3,0,0,0);
-        let bateau4 = new Pion("Cuirasse", 4,0,0,0);
-        let bateau5 = new Pion("Porte avion", 5,0,0,0);
+        let bateau1 = new Ship("Barque", 2,0,0,0);
+        let bateau2 = new Ship("Bateau", 3,0,0,0);
+        let bateau3 = new Ship("Bateau", 3,0,0,0);
+        let bateau4 = new Ship("Cuirasse", 4,0,0,0);
+        let bateau5 = new Ship("Porte avion", 5,0,0,0);
 
 
         document.getElementById("b1").addEventListener("click", function(){

@@ -1,6 +1,4 @@
-
-
-class Game {
+/*export default */class G {
     initGrille() {
         let grille = new Array(10);
         for (let i = 0; i < 10; i++) {
@@ -892,7 +890,6 @@ class Game {
 
 };
 
-module.exports = Game;
 
 
 

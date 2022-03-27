@@ -1,9 +1,5 @@
 html{
-<<<<<<< HEAD
     overflow: hidden;
-=======
-    overflow-x: hidden;
->>>>>>> main
 }
 
 header{
@@ -60,4 +56,9 @@ footer{
     margin-top: 60px;
     padding-left: 20px;
     font-style: italic;
+}
+
+p{
+    margin-left: auto;
+    margin-right: auto;
 }

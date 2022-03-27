@@ -17,12 +17,19 @@ const session = require("express-session")({
 
 var Game = require('./Back/Classe/Game.js');
 var Player = require('./Back/Classe/Player.js');
+var Ship = require('./Back/Classe/Ship.js');
 const sharedsession = require("express-socket.io-session");
 const bodyParser = require('body-parser');
 const { body, validationResult } = require('express-validator');
 const fs = require('fs');
 const mysql = require('mysql');
 const scoreHandler = require('./Back/Module/scoreHandler');
+
+
+/******************/
+let j1 = new Game();
+let j2 = new Game();
+/******************/
 
 // Connexion à la base de donnée
 const con = mysql.createConnection({
@@ -247,7 +254,7 @@ io.on('connection', (socket) => {
 function joinWaitingPlayers() {
     var players = getClientsInRoom('waitingRoom');
 
-    if (players.length >= 2) {
+    if (players.length >= 1) {
         // Deux joueurs en attente -> créer un nouveau jeu
         var game = new Game(players[0].id, players[1].id);
 
