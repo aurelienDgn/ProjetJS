@@ -101,16 +101,6 @@ app.get("/rules", (req, res) => {
     res.sendFile(__dirname + '/Front/HTML/rules.html');
 });
 
-// redirige vers la page des profiles du jeu si l'URL contient '/profile'
-app.get("/profile", (req, res) => {
-    res.sendFile(__dirname + '/Front/HTML/profile.html');
-});
-
-// redirige vers la page de changement de MDP si l'URL contient '/newPassword'
-app.get("/newPassword", (req, res) => {
-    res.sendFile(__dirname + '/Front/HTML/newPassword.html');
-});
-
 // redirige vers la page de jeu si l'URL contient '/game'
 app.get('/game', (req, res) => {
     // console.log("username", req.session.username, "ready", req.session.ready);
@@ -133,7 +123,7 @@ io.on('connection', (socket) => {
     };
 
     // Entre dans la salle d'attente, il faut attendre un deuxième joueur.
-    socket.join('waiting-room');
+    socket.join('waitingRoom');
 
     socket.on("register", (info) => {
         let sql = "INSERT INTO users VALUES (default,?,?)";
@@ -255,15 +245,15 @@ io.on('connection', (socket) => {
  * Rejoindre la salle d'attente
  */
 function joinWaitingPlayers() {
-    var players = getClientsInRoom('waiting room');
+    var players = getClientsInRoom('waitingRoom');
 
     if (players.length >= 2) {
         // Deux joueurs en attente -> créer un nouveau jeu
-        var game = new BattleshipGame(gameIdCounter++, players[0].id, players[1].id);
+        var game = new Game(players[0].id, players[1].id);
 
         // Créez une nouvelle salle pour ce jeu
-        players[0].leave('waiting room');
-        players[1].leave('waiting room');
+        players[0].leave('waitingRoom');
+        players[1].leave('waitingRoom');
         players[0].join('game' + game.id);
         players[1].join('game' + game.id);
 
