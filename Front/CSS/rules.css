@@ -34,6 +34,12 @@ h1 a:hover{
     font-weight: bold;
 }
 
+span#username{
+    font-family: 'Permanent Marker';
+    color: #A67D52;
+    font-size: 2rem;
+}
+
 body{
     background-color: rgba(100, 202, 211, 0.5);
 }

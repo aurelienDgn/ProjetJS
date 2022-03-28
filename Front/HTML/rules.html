@@ -15,6 +15,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat&family=Permanent+Marker&display=swap" rel="stylesheet">
 
+    <!-- include socket-->
+    <script src="/socket.io/socket.io.js"></script>
+
     <!-- include css-->
     <link rel="stylesheet" type="text/css" href="../CSS/rules.css"/>
 
@@ -24,8 +27,9 @@
 <body>
     <header class="d-flex row align-items-center">
         <h1 class="col-9"><a href="/">BattleCheap</a></h1>
-        <a href="signin" class="btn btnHeader col-1">Connexion</a>
-        <a href="signup" class="btn btnHeader col-1">Inscription</a>
+        <a href="signin" id="connexion" class="btn btnHeader col-1">Connexion</a>
+        <a href="signup" id="inscription" class="btn btnHeader col-1">Inscription</a>
+        <span class="col-1" id="username"></span>
     </header>
 
     <main>
@@ -63,4 +67,6 @@
         <p>&copy; BattleCheap - Projet JS CIR2 - 2021 / 2022 - Maxime - Djallal - Enzo - Aurélien - Steeven</p>
     </footer>
 </body>
+<script>let socket = io();</script>
+<script src="../JS/home.js"></script>
 </html>
