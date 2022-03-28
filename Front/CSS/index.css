@@ -1,5 +1,5 @@
 html{
-    overflow: hidden;
+    overflow-x: hidden;
 }
 
 header{
@@ -21,9 +21,7 @@ h1 a:hover{
 span#username{
     font-family: 'Permanent Marker';
     color: #A67D52;
-    margin-left: 93%;
-    margin-top: -3.4%;
-    font-size: 200%;
+    font-size: 2rem;
 }
 
 .btnHeader{

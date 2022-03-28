@@ -1,9 +1,5 @@
 html{
-<<<<<<< HEAD
-    overflow: hidden;
-=======
     overflow-x: hidden;
->>>>>>> main
 }
 
 header{
@@ -22,18 +18,20 @@ h1 a:hover{
     color: #9b6c3a;
 }
 
-.btn{
+.btnHeader{
     margin: 10px 10px;
     border: solid #A67D52 1px;
     color: #A67D52;
-    font-size: 1.2rem;
+    font-size: 1.5rem;
+    font-weight: 500;
 }
 
-.btn:hover{
+.btnHeader:hover{
     border: solid #9b6c3a 1px;
     color: #9b6c3a;
     background-color: rgba(155, 108, 58, 0.2);
-    font-size: 1.2rem;
+    font-size: 1.5rem;
+    font-weight: bold;
 }
 
 body{
