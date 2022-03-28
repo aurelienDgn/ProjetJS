@@ -99,7 +99,7 @@ app.get('/waitingRoom', (req, res) => {
         console.log(req.session.ready);
     }
     else {
-        res.redirect('/');
+        res.redirect('/signin');
     }
 });
 
