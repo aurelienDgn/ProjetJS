@@ -1,3 +1,5 @@
+//const { Socket } = require("socket.io");
+
 /*export default */class G {
     initGrille() {
         let grille = new Array(10);
@@ -10,6 +12,7 @@
     constructor() {
         //this.joueur1 = joueur1;
         //this.joueur2 = joueur2;
+        let socket = io();
         this.grille = this.initGrille();
         this.ready = 0;
         let now = new Date();
@@ -63,15 +66,18 @@
         this.batPlace = [0, 0, 0, false, false, false, false, false];
         this.nbBatPlace = 0;
 
+        socket.emit("test");
     }
 
 
     /********************************************************* */
 
     rondPoint(coord, arme) {
-        if (this.canAttack == true) {
+
+        if (this.canAttack == true ) {
             this.attack(coord, arme);
-        } else if (this.canPlace) {
+        }
+        if (this.canPlace) {
             this.place(coord);
         }
     }
@@ -148,6 +154,10 @@
             //console.log("placé");
             this.batPlace[this.batActu] = true;
             this.nbBatPlace++;
+
+            if(this.nbBatPlace == 5){
+                socket.emit("ship", this.grille);
+            }
         }
     }
 
@@ -301,11 +311,11 @@
     /********************************************* */
     setArme(nb) {
         this.arme = nb;
-        //if(this.nbBatPlace == 5){
 
+        if(this.nbBatPlace == 5){
             this.canAttack = true;
             this.canHover = false;
-        //}
+        }
     }
 
     getjoueur1() {
@@ -392,206 +402,8 @@
 
     /***********************armes**********************************/
 
-    grilleAdv(coord, content){
+    /*grilleAdv(coord, content){
         this.adv[coord[0]][coord[1]] = content;
-    }
-
-    missile(coord){
-
-        let destroy = false;
-        let shoot = false;
-
-        if(this.adv[coord[0]][coord[1]] != 0 && this.adv[coord[0]][coord[1]] != 1 && this.adv[coord[0]][coord[1]] != 2){
-        
-            switch(this.adv[coord[0]][coord[1]]){
-                case 3:
-                    if(this.advB3 != 0){
-
-                        this.advB3--;
-                        shoot = true;
-        
-                        if(this.advB3 == 0){
-                            destroy = true;
-                        }
-                    }
-                    break;
-                case 4:
-                    if(this.advB4 != 0){
-
-                        this.advB4--;
-                        shoot = true;
-        
-                        if(this.advB4 == 0){
-                            destroy = true;
-                        }
-                    }
-                    break;
-                case 5:
-                    if(this.advB5 != 0){
-
-                        this.advB5--;
-                        shoot = true;
-        
-                        if(this.advB5 == 0){
-                            destroy = true;
-                        }
-                    }
-                    break;
-                case 6:
-                    if(this.advB6 != 0){
-
-                        this.advB6--;
-                        shoot = true;
-        
-                        if(this.advB6 == 0){
-                            destroy = true;
-                        }
-                    }
-                    break;
-                case 7:
-                    if(this.advB7 != 0){
-
-                        this.advB7--;
-                        shoot = true;
-        
-                        if(this.advB7 == 0){
-                            destroy = true;
-                        }
-                    }
-                    break;
-            }
-
-            
-            this.resultAttack(coord, shoot, destroy);
-        } else if (this.adv[coord[0]][coord[1]] == 0){
-            this.resultAttack(coord, shoot, destroy);
-        }
-
-    }
-
-    radar(coord){
-        if (this.radarUsed != true) {
-            this.radarUsed = true;
-            
-            let x = coord[0] - 1;
-            let y = coord[1] -1;
-
-            for(let i=0; i<3;i++){
-                for(let j=0;j<3;j++){
-                    console.log("Case : "+this.adv[x+i][y+j]);
-                    if(this.adv[x+i][y+j] != 0 && this.adv[x+i][y+j] != 1 && this.adv[x+i][y+j] != 2){
-                        console.log("y'a un bateau en "+[x+i]+"-"+[y+j]);
-                    }
-                }
-            }
-        }
-        else {
-            alert("Radar déjà utlisé.");
-        }
-    }
-
-    torpille(coord){
-        if(this.torpilleUsed == false){
-            this.torpilleUsed = true;
-
-            if(this.adv[coord[0]][coord[1]] != 0 && this.adv[coord[0]][coord[1]] != 1 && this.adv[coord[0]][coord[1]] != 2){
-
-                switch(this.adv[coord[0]][coord[1]]){
-                    case 3:
-                        if(this.advB3 <= 2){
-
-                            this.advB3 = 0;
-
-                            for(let i=0;i<10;i++){
-                                for(let j=0;j<10;j++){
-                                    if(this.adv[i][j] == 3){
-                                        this.setCase(i,j,1);
-                                        let g = document.getElementById("case" + i + "-" + j);
-                                        let t = g.style.backgroundImage;
-                                        g.style.backgroundImage = "url(../Images/croixV.png), " + t;
-                                    } 
-                                }
-                            }
-                        }
-                        break;
-                    case 4:
-                        console.log(this.advB4);
-                        if(this.advB4 <= 2){
-
-                            this.advB4 = 0;
-
-                            for(let i=0;i<10;i++){
-                                for(let j=0;j<10;j++){
-                                    if(this.adv[i][j] == 4){
-                                        this.setCase(i,j,1);
-                                        let g = document.getElementById("case" + i + "-" + j);
-                                        let t = g.style.backgroundImage;
-                                        g.style.backgroundImage = "url(../Images/croixV.png), " + t;
-                                    } 
-                                }
-                            }
-                        
-                        }
-                        break;
-                    case 5:
-                        if(this.advB5 <= 2){
-
-                            this.advB5 = 0;
-
-                            for(let i=0;i<10;i++){
-                                for(let j=0;j<10;j++){
-                                    if(this.adv[i][j] == 5){
-                                        this.setCase(i,j,1);
-                                        let g = document.getElementById("case" + i + "-" + j);
-                                        let t = g.style.backgroundImage;
-                                        g.style.backgroundImage = "url(../Images/croixV.png), " + t;
-                                    } 
-                                }
-                            }
-                        
-                        }
-                        break;
-                    case 6:
-                        if(this.advB6 <= 2){
-
-                            this.advB6 = 0;
-
-                            for(let i=0;i<10;i++){
-                                for(let j=0;j<10;j++){
-                                    if(this.adv[i][j] == 6){
-                                        this.setCase(i,j,1);
-                                        let g = document.getElementById("case" + i + "-" + j);
-                                        let t = g.style.backgroundImage;
-                                        g.style.backgroundImage = "url(../Images/croixV.png), " + t;
-                                    } 
-                                }
-                            }
-                        
-                        }
-                        break;
-                    case 7:
-                        if(this.advB7 <= 2){
-
-                            this.advB7 = 0;
-
-                            for(let i=0;i<10;i++){
-                                for(let j=0;j<10;j++){
-                                    if(this.adv[i][j] == 7){
-                                        this.setCase(i,j,1);
-                                        let g = document.getElementById("case" + i + "-" + j);
-                                        let t = g.style.backgroundImage;
-                                        g.style.backgroundImage = "url(../Images/croixV.png), " + t;
-                                    } 
-                                }
-                            }
-                        
-                        }
-                        break;
-                }
-            }
-        } else{
-            alert("Torpille déjà utlisé.");
-        }
     }
 
     bombe(coord){
@@ -733,13 +545,14 @@
         } else{
             alert("Bombe à fragment déjà utilisé");
         }
-    }
+    }*/
 
     /****************************************************** */
 
     /************************************ */
     resultAttack(coord, resultAtk, destroyed) {
 
+        console.log("fct atkk");
         let g = document.getElementById("case" + coord[0] + "-" + coord[1]);
         if (resultAtk == true) {
 
@@ -750,7 +563,6 @@
                 let t = g.style.backgroundImage;
                 g.style.backgroundImage = "url(../Images/croixV.png), " + t;
                 this.setCase(coord[0],coord[1],1);
-                this.grilleAdv(coord,1);
                 // Afficher un message
 
             } else {
@@ -759,40 +571,98 @@
                 let t = g.style.backgroundImage;
                 g.style.backgroundImage = "url(../Images/croixV.png), " + t;
                 this.setCase(coord[0],coord[1],1);
-                this.grilleAdv(coord,1);
             }
-        }
-        else {
+            let tab = new Array([coord[0],coord[1]]);
+            socket.emit("tourFini", tab);
+        } else {
             console.log("rien");
             //numéro pas touché
             let t = g.style.backgroundImage;
             g.style.backgroundImage = "url(../Images/rond.png), " + t;
             this.setCase(coord[0],coord[1],2);
-            this.grilleAdv(coord,2);
         }
+        socket.emit("tourFini", -1);
+        
     }
 
+    resultTorp(tabCoord){
+        
+        for(let i=0;i<tabCoord.length;i++){
+            let co = tabCoord[i];
+            let g = document.getElementById("case" + co[0] + "-" + co[1]);
+            let t = g.style.backgroundImage;
+            g.style.backgroundImage = "url(../Images/croixV.png), " + t;
+        }
+        socket.emit("tourFini", tabCoord);
+    }
+
+    resultBomb(tab){
+
+        for(let i=0;i<tab.length;i++){
+            let co = tab[i];
+            let g = document.getElementById("case" + co[0] + "-" + co[1]);
+            let t = g.style.backgroundImage;
+            g.style.backgroundImage = "url(../Images/croixV.png), " + t;
+        }
+        socket.emit("tourFini", tab);
+    }
+
+    resRad(tab){
+        if(tab == 1){
+            alert("Radar déjà utilisé");
+        } else{
+            for(let i=0;i<tab.length;i++){
+                let co = tab[i];
+                let g = document.getElementById("case" + co[0] + "-" + co[1]);
+                let t = g.style.backgroundImage;
+                g.style.backgroundImage = "url(../Images/rad.png), " + t;
+            }
+        }
+        socket.emit("tourFini");
+    }
+
+
     /******************************************* */
+
     attack(coord, arme) {
 
-        if (this.canAttack == true) {
+        socket.emit("canPlay");
+
+            
+        if (this.canAttack == true /*&& rep*/ ) {
             console.log("Coordonnées : " + coord + "- Arme = " + arme);
 
             //envoyer au serveur
+            socket.emit("attack",coord,this.getArme());
+
             switch (arme){
                 case 1:
-                    this.missile(coord);
+                    socket.on("res", (coor,shot,des) => {
+                        console.log("1");
+                        this.resultAttack(coor,shot,des);
+                    });
                     break;
                 case 2:
-                    this.torpille(coord);
+                    console.log("2");
+                    socket.on("torp", (tabCoord) => {
+                        this.resultTorp(tabCoord);
+                    });
                     break;
                 case 3:
-                    this.radar(coord);
+                    console.log("3");
+                    socket.on("radar", (tabR) => {
+                        this.resRad(tabR);
+                    })
                     break;
                 case 4:
-                    this.bombe(coord);
+                    console.log("4");
+                    socket.on("bomb", (tab) => {
+                        this.resultBomb(tab);
+                    })
                     break;
             }
+        } else{
+            console.log("Ce n'est pas encore à vous");
         }
     }
 

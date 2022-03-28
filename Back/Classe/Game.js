@@ -1,3 +1,4 @@
+const { Socket } = require("socket.io");
 
 
 class Game {
@@ -10,37 +11,38 @@ class Game {
     }
 
     constructor() {
+        this.t = "null";
         //this.joueur1 = joueur1;
         //this.joueur2 = joueur2;
-        this.grille = this.initGrille();
+        this.grilleJ1 = this.initGrille();
+        this.grilleJ2 = this.initGrille();
         this.ready = 0;
         let now = new Date();
         this.time = now.getMinutes() * 60 + now.getSeconds();
         this.winner = undefined;
         this.turn = 1;
         this.arme = 1;
-        this.radarUsed = false;
-        this.torpilleUsed = false;
-        this.bombeAFragUsed = false;
+        this.radarUsedJ1 = false;
+        this.radarUsedJ2 = false;
+        this.torpilleUsedJ1 = false;
+        this.torpilleUsedJ2 = false;
+        this.bombeAFragUsedJ1 = false;
+        this.bombeAFragUsedJ2 = false;
 
-        this.adv = [
-            [3,3,0,0,0,0,0,0,0,0],
-            [0,0,0,0,0,0,0,0,0,0],
-            [4,4,4,0,0,0,0,0,0,0],
-            [0,0,0,0,0,0,0,0,0,0],
-            [5,5,5,0,0,0,0,0,0,0],
-            [0,0,0,0,0,0,0,0,0,0],
-            [6,6,6,6,0,0,0,0,0,0],
-            [0,0,0,0,0,0,0,0,0,0],
-            [7,7,7,7,7,0,0,0,0,0],
-            [0,0,0,0,0,0,0,0,0,0]
-        ];
+        this.b3J1 = 2;
+        this.b4J1 = 3;
+        this.b5J1 = 3;
+        this.b6J1 = 4;
+        this.b7J1 = 5;
 
-        this.advB3 = 2;
-        this.advB4 = 3;
-        this.advB5 = 3;
-        this.advB6 = 4;
-        this.advB7 = 5;
+        this.b3J2 = 2;
+        this.b4J2 = 3;
+        this.b5J2 = 3;
+        this.b6J2 = 4;
+        this.b7J2 = 5;
+
+        this.canPlayJ1 = false;
+        this.canPlayJ2 = false;
 
         /************* */
         this.nbShipAlive = 5;
@@ -63,12 +65,198 @@ class Game {
         this.bateau7H = ["url('../Images/horizontally/boat5.1.png')", "url('../Images/horizontally/boat5.2.png')", "url('../Images/horizontally/boat5.3.png')", "url('../Images/horizontally/boat5.4.png')", "url('../Images/horizontally/boat5.5.png')"];
 
         this.batPlace = [0, 0, 0, false, false, false, false, false];
+        this.batPlaceJ1 = false;
+        this.batPlaceJ2 = false;
+
         this.nbBatPlace = 0;
 
     }
 
 
     /********************************************************* */
+
+    setCanPlayJ1(b){
+        this.canPlayJ1 = b;
+    }
+
+    getCanPlayJ1(){
+        return this.canPlayJ1;
+    }
+
+    setCanPlayJ2(b){
+        this.canPlayJ2 = b;
+    }
+
+    getCanPlayJ2(){
+        return this.canPlayJ2;
+    }
+
+    getBatPlaceJ1(){
+        return this.batPlaceJ1;
+    }
+
+    setBatPlaceJ1(b){
+        this.batPlaceJ1 = b;
+    }
+
+    getBatPlaceJ2(){
+        return this.batPlaceJ2;
+    }
+
+    setBatPlaceJ2(b){
+        this.batPlaceJ2 = b;
+    }
+
+    getTorpilleJ1(){
+        return this.torpilleUsedJ1;
+    }
+
+    setTorpilleJ1(b){
+        this.torpilleUsedJ1 = b;
+    }
+
+    getTorpilleJ2(){
+        return this.torpilleUsedJ2;
+    }
+
+    setTorpilleJ2(b){
+        this.torpilleUsedJ2 = b;
+    }
+
+    getBombeJ1(){
+        return this.bombeAFragUsedJ1;
+    }
+
+    setBombeJ1(b){
+        this.bombeAFragUsedJ1 = b;
+    }
+
+    getBombeJ2(){
+        return this.bombeAFragUsedJ2;
+    }
+
+    setBombeJ2(b){
+        this.bombeAFragUsedJ2 = b;
+    }
+
+    getRadarJ1(){
+        return this.radarUsedJ1;
+    }
+
+    setRadarJ1(b){
+        this.radarUsedJ1 = b;
+    }
+
+    getRadarJ2(){
+        return this.radarUsedJ2;
+    }
+
+    setRadarJ2(b){
+        this.radarUsedJ2 = b;
+    }
+
+    getB3J1(){
+        return this.b3J1;
+    }
+
+    setB3J1(nb){
+        this.b3J1 += nb;
+    }
+
+    getB4J1(){
+        return this.b4J1;
+    }
+
+    setB4J1(nb){
+        this.b4J1 += nb;
+    }
+
+    getB5J1(){
+        return this.b5J1;
+    }
+
+    setB5J1(nb){
+        this.b5J1 += nb;
+    }
+
+    getB6J1(){
+        return this.b6J1;
+    }
+
+    setB6J1(nb){
+        this.b6J1 += nb;
+    }
+
+    getB7J1(){
+        return this.b7J1;
+    }
+
+    setB7J1(nb){
+        this.b7J1 += nb;
+    }
+
+    getB3J2(){
+        return this.b3J2;
+    }
+
+    setB3J2(nb){
+        this.b3J2 += nb;
+    }
+
+    getB4J2(){
+        return this.b4J2;
+    }
+
+    setB4J2(nb){
+        this.b4J2 += nb;
+    }
+
+    getB5J2(){
+        return this.b5J2;
+    }
+
+    setB5J2(nb){
+        this.b5J2 += nb;
+    }
+
+    getB6J2(){
+        return this.b6J2;
+    }
+
+    setB6J2(nb){
+        this.b6J2 += nb;
+    }
+
+    getB7J2(){
+        return this.b7J2;
+    }
+
+    setB7J2(nb){
+        this.b7J2 += nb;
+    }
+
+    setGrilleJ1(grid){
+        this.grilleJ1 = grid;
+    }
+
+    getGrilleJ1(){
+        return this.grilleJ1;
+    }
+
+    setGrilleJ2(grid){
+        this.grilleJ2 = grid;
+    }
+
+    getGrilleJ2(){
+        return this.grilleJ2;
+    }
+
+    setT(n){
+        this.t = n;
+    }
+    getT(){
+        return this.t;
+    }
 
     rondPoint(coord, arme) {
         if (this.canAttack == true) {
@@ -303,11 +491,11 @@ class Game {
     /********************************************* */
     setArme(nb) {
         this.arme = nb;
-        //if(this.nbBatPlace == 5){
+        if(this.nbBatPlace == 5){
 
             this.canAttack = true;
             this.canHover = false;
-        //}
+        }
     }
 
     getjoueur1() {
@@ -322,13 +510,22 @@ class Game {
         return this.turn;
     }
 
-    setCase(x, y, content, changeHTML) {
-        this.grille[x][y] = content;
+    setCase(x, y, content, j) {
+        if(j == 1){
+            console.log("modif grille2");
+            this.grilleJ2[x][y] = content;
+        } else if (j == 2){
+            console.log("modif grillej1");
+            this.grilleJ1[x][y] = content;
+        } else{
+            console.log("bizarre");
+        }
+        
         /*************************** */
         //Changer l'apparence de la grille
-        if (changeHTML) {
+        /*if (changeHTML) {
             this.printCase(x, y, content);
-        }
+        }*/
     }
 
     getCase(x, y) {
@@ -398,7 +595,7 @@ class Game {
         this.adv[coord[0]][coord[1]] = content;
     }
 
-    missile(coord){
+    /*missile(coord){
 
         let destroy = false;
         let shoot = false;
@@ -735,42 +932,40 @@ class Game {
         } else{
             alert("Bombe à fragment déjà utilisé");
         }
-    }
+    }*/
 
     /****************************************************** */
 
     /************************************ */
-    resultAttack(coord, resultAtk, destroyed) {
+    resultAttack(coord, resultAtk, destroyed, j) {
 
-        let g = document.getElementById("case" + coord[0] + "-" + coord[1]);
         if (resultAtk == true) {
 
             if (destroyed == true) {
 
                 //Demander co du bateau au serveur
                 console.log("Un bateau détruit");
-                let t = g.style.backgroundImage;
-                g.style.backgroundImage = "url(../Images/croixV.png), " + t;
-                this.setCase(coord[0],coord[1],1);
-                this.grilleAdv(coord,1);
+                this.setCase(coord[0],coord[1],1,j);
+
                 // Afficher un message
 
             } else {
                 // afficher bateau touché
                 console.log("bat touché");
-                let t = g.style.backgroundImage;
-                g.style.backgroundImage = "url(../Images/croixV.png), " + t;
-                this.setCase(coord[0],coord[1],1);
-                this.grilleAdv(coord,1);
+                this.setCase(coord[0],coord[1],1,j);
             }
         }
         else {
             console.log("rien");
-            //numéro pas touché
-            let t = g.style.backgroundImage;
-            g.style.backgroundImage = "url(../Images/rond.png), " + t;
-            this.setCase(coord[0],coord[1],2);
-            this.grilleAdv(coord,2);
+            this.setCase(coord[0],coord[1],2,j);
+
+            //if(j == 1){
+                //console.log("modif grille1");
+                //this.grilleJ1[x][y] = content;
+            //} else if (j == 2){
+               // console.log("modif grillej2");
+               // this.grilleJ2[x][y] = content;
+            //}
         }
     }
 

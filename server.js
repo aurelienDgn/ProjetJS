@@ -26,11 +26,6 @@ const mysql = require('mysql');
 const scoreHandler = require('./Back/Module/scoreHandler');
 
 
-/******************/
-let j1 = new Game();
-let j2 = new Game();
-/******************/
-
 // Connexion à la base de donnée
 const con = mysql.createConnection({
     host: "localhost",
@@ -99,7 +94,7 @@ app.get('/waitingRoom', (req, res) => {
         console.log(req.session.ready);
     }
     else {
-        res.redirect('/signin');
+        res.redirect('/');
     }
 });
 
@@ -245,6 +240,834 @@ io.on('connection', (socket) => {
     });
 
     joinWaitingPlayers();
+
+
+    /****************************************************************************/
+
+    let j1 = new Game();
+
+    let j2 = new Game();
+
+    /*socket.on('test', function(){
+        console.log(socket.handshake.session.player);
+    })*/
+
+    socket.on('ship', function(grid){
+        if(socket.handshake.session.player == 1){
+            games[socket.handshake.session.room].setGrilleJ1(grid);
+            games[socket.handshake.session.room].setBatPlaceJ1(true);
+
+            if(games[socket.handshake.session.room].getBatPlaceJ2() && games[socket.handshake.session.room].getBatPlaceJ1()){
+                games[socket.handshake.session.room].setCanPlayJ1(true);
+                games[socket.handshake.session.room].setCanPlayJ2(false);
+            }
+
+        } else if (socket.handshake.session.player == 2){
+            games[socket.handshake.session.room].setGrilleJ2(grid);
+            games[socket.handshake.session.room].setBatPlaceJ2(true);
+
+            if(games[socket.handshake.session.room].getBatPlaceJ2() && games[socket.handshake.session.room].getBatPlaceJ1()){
+                games[socket.handshake.session.room].setCanPlayJ1(true);
+                games[socket.handshake.session.room].setCanPlayJ2(false);
+            }
+
+        }
+
+        //console.log("J1 = "+j1.getT()+" - J2 = "+j2.getT());
+        
+    })
+
+    function missile(coord){
+
+        let grilleAdv;
+
+        if(socket.handshake.session.player == 1){
+            grilleAdv = games[socket.handshake.session.room].getGrilleJ2();
+
+            let destroy = false;
+            let shoot = false;
+
+            if(grilleAdv[coord[0]][coord[1]] != 0 && grilleAdv[coord[0]][coord[1]] != 1 && grilleAdv[coord[0]][coord[1]] != 2){
+            
+                switch(grilleAdv[coord[0]][coord[1]]){
+                    case 3:
+                        if(games[socket.handshake.session.room].getB3J2() != 0){
+    
+                            games[socket.handshake.session.room].setB3J2(-1);
+                            console.log("B3 = "+games[socket.handshake.session.room].getB3J2());
+                            shoot = true;
+            
+                            if(games[socket.handshake.session.room].getB3J2() == 0){
+                                destroy = true;
+                            }
+                        }
+                        break;
+                    case 4:
+                        if(games[socket.handshake.session.room].getB4J2() != 0){
+    
+                            games[socket.handshake.session.room].setB4J2(-1);
+                            shoot = true;
+            
+                            if(games[socket.handshake.session.room].getB4J2() == 0){
+                                destroy = true;
+                            }
+                        }
+                        break;
+                    case 5:
+                        if(games[socket.handshake.session.room].getB5J2() != 0){
+    
+                            games[socket.handshake.session.room].setB5J2(-1);
+                            shoot = true;
+            
+                            if(games[socket.handshake.session.room].getB5J2() == 0){
+                                destroy = true;
+                            }
+                        }
+                        break;
+                    case 6:
+                        if(games[socket.handshake.session.room].getB6J2() != 0){
+    
+                            games[socket.handshake.session.room].setB6J2(-1);
+                            shoot = true;
+            
+                            if(games[socket.handshake.session.room].getB6J2() == 0){
+                                destroy = true;
+                            }
+                        }
+                        break;
+                    case 7:
+                        if(games[socket.handshake.session.room].getB7J2() != 0){
+    
+                            games[socket.handshake.session.room].setB7J2(-1);
+                            shoot = true;
+            
+                            if(games[socket.handshake.session.room].getB7J2() == 0){
+                                destroy = true;
+                            }
+                        }
+                        break;
+                }
+
+                    games[socket.handshake.session.room].resultAttack(coord, shoot, destroy,1);
+                    console.log("m1");
+                    socket.emit("res",coord,shoot,destroy);
+                
+            } else if (grilleAdv[coord[0]][coord[1]] == 0){
+    
+                    games[socket.handshake.session.room].resultAttack(coord, shoot, destroy,1);
+                    socket.emit("res",coord,shoot,destroy);
+            }
+
+        } else if (socket.handshake.session.player == 2){
+            grilleAdv = games[socket.handshake.session.room].getGrilleJ1();
+
+            let destroy = false;
+            let shoot = false;
+
+            if(grilleAdv[coord[0]][coord[1]] != 0 && grilleAdv[coord[0]][coord[1]] != 1 && grilleAdv[coord[0]][coord[1]] != 2){
+            
+                switch(grilleAdv[coord[0]][coord[1]]){
+                    case 3:
+                        if(games[socket.handshake.session.room].getB3J1() != 0){
+    
+                            games[socket.handshake.session.room].setB3J1(-1);
+                            shoot = true;
+            
+                            if(games[socket.handshake.session.room].getB3J1() == 0){
+                                destroy = true;
+                            }
+                        }
+                        break;
+                    case 4:
+                        if(games[socket.handshake.session.room].getB4J1() != 0){
+    
+                            games[socket.handshake.session.room].setB4J1(-1);
+                            shoot = true;
+            
+                            if(games[socket.handshake.session.room].getB4J1() == 0){
+                                destroy = true;
+                            }
+                        }
+                        break;
+                    case 5:
+                        if(games[socket.handshake.session.room].getB5J1() != 0){
+    
+                            games[socket.handshake.session.room].setB5J1(-1);
+                            shoot = true;
+            
+                            if(games[socket.handshake.session.room].getB5J1() == 0){
+                                destroy = true;
+                            }
+                        }
+                        break;
+                    case 6:
+                        if(games[socket.handshake.session.room].getB6J1() != 0){
+    
+                            games[socket.handshake.session.room].setB6J1(-1);
+                            shoot = true;
+            
+                            if(games[socket.handshake.session.room].getB6J1() == 0){
+                                destroy = true;
+                            }
+                        }
+                        break;
+                    case 7:
+                        if(games[socket.handshake.session.room].getB7J1() != 0){
+    
+                            games[socket.handshake.session.room].setB7J1(-1);
+                            shoot = true;
+            
+                            if(games[socket.handshake.session.room].getB7J1() == 0){
+                                destroy = true;
+                            }
+                        }
+                        break;
+                }
+
+                    games[socket.handshake.session.room].resultAttack(coord, shoot, destroy, 2);
+                    console.log("m2");
+                    socket.emit("res",coord,shoot,destroy);
+                
+            } else if (grilleAdv[coord[0]][coord[1]] == 0){
+    
+                    games[socket.handshake.session.room].resultAttack(coord, shoot, destroy,2);
+                    console.log("m3");
+                    socket.emit("res",coord,shoot,destroy);
+            }
+        }
+    }
+
+    function radar(coord){
+
+        let grilleAdv;
+        let tabR = new Array();
+        let l = 0;
+
+        if(socket.handshake.session.player == 1){
+
+            if (games[socket.handshake.session.room].getRadarJ1() != true) {
+                games[socket.handshake.session.room].setRadarJ1(true);
+                
+                grilleAdv = games[socket.handshake.session.room].getGrilleJ2();
+
+                let x = coord[0] - 1;
+                let y = coord[1] -1;
+    
+                for(let i=0; i<3;i++){
+                    for(let j=0;j<3;j++){
+                        console.log("Case : "+grilleAdv[x+i][y+j]);
+                        if(grilleAdv[x+i][y+j] != 0 && grilleAdv[x+i][y+j] != 1 && grilleAdv[x+i][y+j] != 2){
+                            console.log("y'a un bateau en "+[x+i]+"-"+[y+j]);
+                            //Afficher sur le front les co
+                            tabR[l] = [(x+i),(y+j)];
+                            l++;
+                        }
+                    }
+                }
+                socket.emit("radar", tabR);
+            }
+            else {
+                console.log("Radar déjà utilisé");
+                tabR = 1;
+                socket.emit("radar", tabR);
+            }
+
+        } else if (socket.handshake.session.player == 2){
+
+            if (games[socket.handshake.session.room].getRadarJ2() != true) {
+                games[socket.handshake.session.room].setRadarJ2(true);
+                
+                grilleAdv = games[socket.handshake.session.room].getGrilleJ1();
+
+                let x = coord[0] - 1;
+                let y = coord[1] -1;
+    
+                for(let i=0; i<3;i++){
+                    for(let j=0;j<3;j++){
+                        console.log("Case : "+grilleAdv[x+i][y+j]);
+                        if(grilleAdv[x+i][y+j] != 0 && grilleAdv[x+i][y+j] != 1 && grilleAdv[x+i][y+j] != 2){
+                            console.log("y'a un bateau en "+[x+i]+"-"+[y+j]);
+                            //Afficher sur le front les co
+                            tabR[l] = [(x+i),(y+j)];
+                            l++;
+                        }
+                    }
+                }
+                socket.emit("radar", tabR);
+            }
+            else {
+                console.log("Radar déjà utilisé");
+                tabR = 1;
+                socket.emit("radar", tabR);
+                //Afficher sur le front que le radar est déjà utilisé
+            }
+        }
+    }
+
+        function torpille(coord){
+
+            let grilleAdv;
+            let tabCoord = new Array(2);
+            let l = 0;
+
+            if(socket.handshake.session.player == 1){
+                if(games[socket.handshake.session.room].getTorpilleJ1() == false){
+                    games[socket.handshake.session.room].setTorpilleJ1(true);
+
+                    grilleAdv = games[socket.handshake.session.room].getGrilleJ2();
+        
+                    if(grilleAdv[coord[0]][coord[1]] != 0 && grilleAdv[coord[0]][coord[1]] != 1 && grilleAdv[coord[0]][coord[1]] != 2){
+        
+                        switch(grilleAdv[coord[0]][coord[1]]){
+                            case 3:
+                                if(games[socket.handshake.session.room].getB3J2() <= 2){
+        
+                                    games[socket.handshake.session.room].setB3J2(0);
+        
+                                    for(let i=0;i<10;i++){
+                                        for(let j=0;j<10;j++){
+                                            if(grilleAdv[i][j] == 3){
+                                                games[socket.handshake.session.room].setCase(i,j,1,1);
+                                                tabCoord[l] = [i,j];
+                                                l++;
+                                            } 
+                                        }
+                                    }
+
+                                    socket.emit("torp", tabCoord);
+                                }
+                                break;
+                            case 4:
+                                if(games[socket.handshake.session.room].getB4J2() <= 2){
+        
+                                    games[socket.handshake.session.room].getB4J2(0);
+        
+                                    for(let i=0;i<10;i++){
+                                        for(let j=0;j<10;j++){
+                                            if(grilleAdv[i][j] == 4){
+                                                games[socket.handshake.session.room].setCase(i,j,1,1);                                                
+                                                tabCoord[l] = [i,j];
+                                                l++;
+                                            } 
+                                        }
+                                    }
+                                    socket.emit("torp", tabCoord);
+                                }
+                                break;
+                            case 5:
+                                if(games[socket.handshake.session.room].getB5J2() <= 2){
+        
+                                    games[socket.handshake.session.room].setB5J2(0);
+        
+                                    for(let i=0;i<10;i++){
+                                        for(let j=0;j<10;j++){
+                                            if(grilleAdv[i][j] == 5){
+                                                games[socket.handshake.session.room].setCase(i,j,1,1);
+                                                tabCoord[l] = [i,j];
+                                                l++;
+                                            } 
+                                        }
+                                    }
+                                    socket.emit("torp", tabCoord);
+                                }
+                                break;
+                            case 6:
+                                if(games[socket.handshake.session.room].getB6J2() <= 2){
+        
+                                    games[socket.handshake.session.room].setB6J2(0);
+        
+                                    for(let i=0;i<10;i++){
+                                        for(let j=0;j<10;j++){
+                                            if(grilleAdv[i][j] == 6){
+                                                games[socket.handshake.session.room].setCase(i,j,1,1);
+                                                tabCoord[l] = [i,j];
+                                                l++;
+                                            } 
+                                        }
+                                    }
+                                    socket.emit("torp", tabCoord);
+                                }
+                                break;
+                            case 7:
+                                if(games[socket.handshake.session.room].getB7J2() <= 2){
+        
+                                    games[socket.handshake.session.room].setB7J2(0);
+        
+                                    for(let i=0;i<10;i++){
+                                        for(let j=0;j<10;j++){
+                                            if(grilleAdv[i][j] == 7){
+                                                games[socket.handshake.session.room].setCase(i,j,1,1);
+                                                tabCoord[l] = [i,j];
+                                                l++;
+                                            } 
+                                        }
+                                    }
+                                    socket.emit("torp", tabCoord);
+                                }
+                                break;
+                        }
+                    }
+                } else{
+                    console.log("Torpille déjà utlisé.");
+                }
+            } else if (socket.handshake.session.player == 2){
+
+                if(games[socket.handshake.session.room].getTorpilleJ2() == false){
+                    games[socket.handshake.session.room].setTorpilleJ2(true);
+
+                    grilleAdv = games[socket.handshake.session.room].getGrilleJ1();
+        
+                    if(grilleAdv[coord[0]][coord[1]] != 0 && grilleAdv[coord[0]][coord[1]] != 1 && grilleAdv[coord[0]][coord[1]] != 2){
+        
+                        switch(grilleAdv[coord[0]][coord[1]]){
+                            case 3:
+                                if(games[socket.handshake.session.room].getB3J1() <= 2){
+        
+                                    games[socket.handshake.session.room].setB3J1(0);
+        
+                                    for(let i=0;i<10;i++){
+                                        for(let j=0;j<10;j++){
+                                            if(grilleAdv[i][j] == 3){
+                                                games[socket.handshake.session.room].setCase(i,j,1,2);
+                                                tabCoord[l] = [i,j];
+                                                l++;
+                                            } 
+                                        }
+                                    }
+
+                                    socket.emit("torp", tabCoord);
+                                }
+                                break;
+                            case 4:
+                                if(games[socket.handshake.session.room].getB4J1() <= 2){
+        
+                                    games[socket.handshake.session.room].getB4J1(0);
+        
+                                    for(let i=0;i<10;i++){
+                                        for(let j=0;j<10;j++){
+                                            if(grilleAdv[i][j] == 4){
+                                                games[socket.handshake.session.room].setCase(i,j,1,2);                                                
+                                                tabCoord[l] = [i,j];
+                                                l++;
+                                            } 
+                                        }
+                                    }
+                                    socket.emit("torp", tabCoord);
+                                
+                                }
+                                break;
+                            case 5:
+                                if(games[socket.handshake.session.room].getB5J1() <= 2){
+        
+                                    games[socket.handshake.session.room].setB5J1(0);
+        
+                                    for(let i=0;i<10;i++){
+                                        for(let j=0;j<10;j++){
+                                            if(grilleAdv[i][j] == 5){
+                                                games[socket.handshake.session.room].setCase(i,j,1,2);
+                                                tabCoord[l] = [i,j];
+                                                l++;
+                                            } 
+                                        }
+                                    }
+                                    socket.emit("torp", tabCoord);
+                                }
+                                break;
+                            case 6:
+                                if(games[socket.handshake.session.room].getB6J1() <= 2){
+        
+                                    games[socket.handshake.session.room].setB6J1(0);
+        
+                                    for(let i=0;i<10;i++){
+                                        for(let j=0;j<10;j++){
+                                            if(grilleAdv[i][j] == 6){
+                                                games[socket.handshake.session.room].setCase(i,j,1,2);
+                                                tabCoord[l] = [i,j];
+                                                l++;
+                                            } 
+                                        }
+                                    }
+                                    socket.emit("torp", tabCoord);
+                                }
+                                break;
+                            case 7:
+                                if(games[socket.handshake.session.room].getB7J1() <= 2){
+        
+                                    games[socket.handshake.session.room].setB7J1(0);
+        
+                                    for(let i=0;i<10;i++){
+                                        for(let j=0;j<10;j++){
+                                            if(grilleAdv[i][j] == 7){
+                                                games[socket.handshake.session.room].setCase(i,j,1,2);
+                                                tabCoord[l] = [i,j];
+                                                l++;
+                                            } 
+                                        }
+                                    }
+                                    socket.emit("torp", tabCoord);
+                                }
+                                break;
+                        1
+                    }
+                } else{
+                    console.log("Torpille déjà utlisé.");
+                }
+            }
+        }
+    }
+
+    function bombe(coord){
+
+        let grilleAdv;
+        let tabBmb = new Array();
+        let l=0;
+
+        if(socket.handshake.session.player == 1){
+            if(games[socket.handshake.session.room].getBombeJ1() == false){
+                games[socket.handshake.session.room].setBombeJ1(true);
+
+                grilleAdv = games[socket.handshake.session.room].getGrilleJ2();
+    
+                let x = coord[0];
+                let y = coord[1];
+    
+                if(grilleAdv[x][y] != 0 && grilleAdv[x][y] != 1 && grilleAdv[x][y] != 2){
+                
+                    games[socket.handshake.session.room].setCase(x,y,1,1);
+    
+                    switch(grilleAdv[x][y]){
+                        case 3:
+                            games[socket.handshake.session.room].setB3J2(-1);
+                            break;
+                        case 4:
+                            games[socket.handshake.session.room].setB4J2(-1);
+                            break;
+                        case 5:
+                            games[socket.handshake.session.room].setB5J2(-1);
+                            break;
+                        case 6:
+                            games[socket.handshake.session.room].setB6J2(-1);
+                            break;
+                        case 7:
+                            games[socket.handshake.session.room].setB7J2(-1);
+                            break;
+                    }
+                    tabBmb[l] = [x,y];
+                    l++
+                }
+                
+                if(grilleAdv[x+1][y] != 0 && grilleAdv[x+1][y] != 1 && grilleAdv[x+1][y] != 2){
+                
+                    games[socket.handshake.session.room].setCase(x+1,y,1,1);
+    
+                    switch(grilleAdv[x+1][y]){
+                        case 3:
+                            games[socket.handshake.session.room].setB3J2(-1);
+                            break;
+                        case 4:
+                            games[socket.handshake.session.room].setB4J2(-1);
+                            break;
+                        case 5:
+                            games[socket.handshake.session.room].setB5J2(-1);
+                            break;
+                        case 6:
+                            games[socket.handshake.session.room].setB6J2(-1);
+                            break;
+                        case 7:
+                            games[socket.handshake.session.room].setB7J2(-1);
+                            break;
+                    }
+                    //console.log("x+1 : "+[x+1,y]);
+                    tabBmb[l] = [x+1,y];
+                    l++;
+                }
+    
+                if(grilleAdv[x-1][y] != 0 && grilleAdv[x-1][y] != 1 && grilleAdv[x-1][y] != 2){
+                
+                    games[socket.handshake.session.room].setCase(x-1,y,1,1);
+    
+                    switch(grilleAdv[x-1][y]){
+                        case 3:
+                            games[socket.handshake.session.room].setB3J2(-1);
+                            break;
+                        case 4:
+                            games[socket.handshake.session.room].setB4J2(-1);
+                            break;
+                        case 5:
+                            games[socket.handshake.session.room].setB5J2(-1);
+                            break;
+                        case 6:
+                            games[socket.handshake.session.room].setB6J2(-1);
+                            break;
+                        case 7:
+                            games[socket.handshake.session.room].setB7J2(-1);
+                            break;
+                    }
+                    //console.log("x-1 : "+[x-1,y]);
+                    tabBmb[l] = [x-1,y];
+                    l++;
+                }
+    
+                if(grilleAdv[x][y+1] != 0 && grilleAdv[x][y+1] != 1 && grilleAdv[x][y+1] != 2){
+                
+                    games[socket.handshake.session.room].setCase(x,y+1,1,1);
+    
+                    switch(grilleAdv[x][y+1]){
+                        case 3:
+                            games[socket.handshake.session.room].setB3J2(-1);
+                            break;
+                        case 4:
+                            games[socket.handshake.session.room].setB4J2(-1);
+                            break;
+                        case 5:
+                            games[socket.handshake.session.room].setB5J2(-1);
+                            break;
+                        case 6:
+                            games[socket.handshake.session.room].setB6J2(-1);
+                            break;
+                        case 7:
+                            games[socket.handshake.session.room].setB7J2(-1);
+                            break;
+                    }
+                    //console.log("y+1 : "+[x,y+1]);
+                    tabBmb[l] = [x,y+1];
+                    l++;
+                }
+    
+                if(grilleAdv[x][y-1] != 0 && grilleAdv[x][y-1] != 1 && grilleAdv[x][y-1] != 2){
+                
+                    games[socket.handshake.session.room].setCase(x,y-1,1,1);
+    
+                    switch(grilleAdv[x][y-1]){
+                        case 3:
+                            games[socket.handshake.session.room].setB3J2(-1);
+                            break;
+                        case 4:
+                            games[socket.handshake.session.room].setB4J2(-1);
+                            break;
+                        case 5:
+                            games[socket.handshake.session.room].setB5J2(-1);
+                            break;
+                        case 6:
+                            games[socket.handshake.session.room].setB6J2(-1);
+                            break;
+                        case 7:
+                            games[socket.handshake.session.room].setB7J2(-1);
+                            break;
+                    }
+                    //console.log("y-1 : "+[x,y-1]);
+                    tabBmb[l] = [x,y-1];
+                    l++;
+                }
+
+                //console.log(tabBmb);
+                socket.emit("bomb", tabBmb);
+
+            } else{
+                //alert("Bombe à fragment déjà utilisé");
+                console.log("Bombe déjà utilisé");
+            }
+        } else if(socket.handshake.session.player == 2){
+            if(games[socket.handshake.session.room].getBombeJ2() == false){
+                games[socket.handshake.session.room].setBombeJ2(true);
+
+                grilleAdv = games[socket.handshake.session.room].getGrilleJ1();
+    
+                let x = coord[0];
+                let y = coord[1];
+    
+                if(grilleAdv[x][y] != 0 && grilleAdv[x][y] != 1 && grilleAdv[x][y] != 2){
+                
+                    games[socket.handshake.session.room].setCase(x,y,1,2);
+    
+                    switch(grilleAdv[x][y]){
+                        case 3:
+                            games[socket.handshake.session.room].setB3J1(-1);
+                            break;
+                        case 4:
+                            games[socket.handshake.session.room].setB4J1(-1);
+                            break;
+                        case 5:
+                            games[socket.handshake.session.room].setB5J1(-1);
+                            break;
+                        case 6:
+                            games[socket.handshake.session.room].setB6J1(-1);
+                            break;
+                        case 7:
+                            games[socket.handshake.session.room].setB7J1(-1);
+                            break;
+                    }
+                    
+                    tabBmb[l] = [x,y];
+                    l++;
+                }
+                
+                if(grilleAdv[x+1][y] != 0 && grilleAdv[x+1][y] != 1 && grilleAdv[x+1][y] != 2){
+                
+                    games[socket.handshake.session.room].setCase(x+1,y,1,2);
+    
+                    switch(grilleAdv[x+1][y]){
+                        case 3:
+                            games[socket.handshake.session.room].setB3J1(-1);
+                            break;
+                        case 4:
+                            games[socket.handshake.session.room].setB4J1(-1);
+                            break;
+                        case 5:
+                            games[socket.handshake.session.room].setB5J1(-1);
+                            break;
+                        case 6:
+                            games[socket.handshake.session.room].setB6J1(-1);
+                            break;
+                        case 7:
+                            games[socket.handshake.session.room].setB7J1(-1);
+                            break;
+                    }
+                    //console.log("x+1 : "+[x+1,y]);
+                    tabBmb[l] = [x+1+1,y];
+                    l++;
+                }
+    
+                if(grilleAdv[x-1][y] != 0 && grilleAdv[x-1][y] != 1 && grilleAdv[x-1][y] != 2){
+                
+                    games[socket.handshake.session.room].setCase(x-1,y,1,2);
+    
+                    switch(grilleAdv[x-1][y]){
+                        case 3:
+                            games[socket.handshake.session.room].setB3J1(-1);
+                            break;
+                        case 4:
+                            games[socket.handshake.session.room].setB4J1(-1);
+                            break;
+                        case 5:
+                            games[socket.handshake.session.room].setB5J1(-1);
+                            break;
+                        case 6:
+                            games[socket.handshake.session.room].setB6J1(-1);
+                            break;
+                        case 7:
+                            games[socket.handshake.session.room].setB7J1(-1);
+                            break;
+                    }
+                    //console.log("x-1 : "+[x-1,y]);
+                    tabBmb[l] = [x-1,y];
+                    l++;
+                }
+    
+                if(grilleAdv[x][y+1] != 0 && grilleAdv[x][y+1] != 1 && grilleAdv[x][y+1] != 2){
+                
+                    games[socket.handshake.session.room].setCase(x,y+1,1,2);
+    
+                    switch(grilleAdv[x][y+1]){
+                        case 3:
+                            games[socket.handshake.session.room].setB3J1(-1);
+                            break;
+                        case 4:
+                            games[socket.handshake.session.room].setB4J1(-1);
+                            break;
+                        case 5:
+                            games[socket.handshake.session.room].setB5J1(-1);
+                            break;
+                        case 6:
+                            games[socket.handshake.session.room].setB6J1(-1);
+                            break;
+                        case 7:
+                            games[socket.handshake.session.room].setB7J1(-1);
+                            break;
+                    }
+                    //console.log("y+1 : "+[x,y+1]);
+                    tabBmb[l] = [x,y+1];
+                    l++;
+                }
+    
+                if(grilleAdv[x][y-1] != 0 && grilleAdv[x][y-1] != 1 && grilleAdv[x][y-1] != 2){
+                
+                    games[socket.handshake.session.room].setCase(x,y-1,1,2);
+    
+                    switch(grilleAdv[x][y-1]){
+                        case 3:
+                            games[socket.handshake.session.room].setB3J1(-1);
+                            break;
+                        case 4:
+                            games[socket.handshake.session.room].setB4J1(-1);
+                            break;
+                        case 5:
+                            games[socket.handshake.session.room].setB5J1(-1);
+                            break;
+                        case 6:
+                            games[socket.handshake.session.room].setB6J1(-1);
+                            break;
+                        case 7:
+                            games[socket.handshake.session.room].setB7J1(-1);
+                            break;
+                    }
+                    //console.log("y-1 : "+[x,y-1]);
+                    tabBmb[l] = [x,y-1];
+                    l++;
+                }
+
+                //console.log(tabBmb);
+                socket.emit("bomb", tabBmb);
+
+            } else{
+                //alert("Bombe à fragment déjà utilisé");
+                console.log("Bombe déjà utilisé");
+            }
+        }
+    }
+
+    socket.on("attack", function(coord,arme){
+
+        switch (arme){
+            case 1:
+                missile(coord);
+                break;
+            case 2:
+                torpille(coord);
+                break;
+            case 3:
+                radar(coord);
+                break;
+            case 4:
+                bombe(coord);
+                break;
+        }
+    })
+
+    socket.on("tourFini", function(tabC){
+
+
+        if(socket.handshake.session.player == 1){
+            games[socket.handshake.session.room].setCanPlayJ1(false);
+            games[socket.handshake.session.room].setCanPlayJ2(true);
+            console.log("une atk vient d'être effectué par J1");
+            
+            socket.broadcast.emit('result', tabC);
+
+        }else if (socket.handshake.session.player == 2){
+            games[socket.handshake.session.room].setCanPlayJ2(false);
+            games[socket.handshake.session.room].setCanPlayJ1(true);
+            console.log("une atk vient d'être effectué par J2");
+
+            socket.broadcast.emit('result', tabC);
+        }
+
+        // Mettre faire la défense de celui à qui ce n'était pas le tour 
+
+        //Lancer fonction isfinish pour voir si la partie est terminé 
+    })
+
+    socket.on("canPlay", function(){
+
+        if(socket.handshake.session.player == 1){
+            socket.emit("rep",games[socket.handshake.session.room].getCanPlayJ1());
+        }else if (socket.handshake.session.player == 2){
+            socket.emit("rep",games[socket.handshake.session.room].getCanPlayJ2());
+        }
+
+    })
+
+    /****************************************************************************/
 
 });
 

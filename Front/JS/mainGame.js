@@ -7,11 +7,13 @@ listeners.initArme();
 listeners.initRota();
 listeners.bat();
 
-//game.defense([0,4], true, false);
-//game.resultAttack([3,2], true, false);
-//game.resultAttack([0,0], false, false);
 
+socket.on("result", (msgTab) => {
 
-
-//game.attack([0,1], "arme");
-//game.defense([2,2], false, false);
+    console.log("zee");
+    /*let it = document.getElementById("dfd");
+    for(let i=0;i<msgTab.length;i++){
+        console.log(msgTab[i]+"\n");
+        it.textContent += msgTab[i]+"\n"
+    }*/
+})
