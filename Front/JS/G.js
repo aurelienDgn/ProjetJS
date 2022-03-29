@@ -552,7 +552,7 @@
     /************************************ */
     resultAttack(coord, resultAtk, destroyed) {
 
-        console.log("fct atkk");
+        //console.log("fct atkk");
         let g = document.getElementById("case" + coord[0] + "-" + coord[1]);
         if (resultAtk == true) {
 
@@ -586,25 +586,31 @@
     }
 
     resultTorp(tabCoord){
-        
-        for(let i=0;i<tabCoord.length;i++){
-            let co = tabCoord[i];
-            let g = document.getElementById("case" + co[0] + "-" + co[1]);
-            let t = g.style.backgroundImage;
-            g.style.backgroundImage = "url(../Images/croixV.png), " + t;
+        if(tabCoord == 1){
+            alert("Torpille déjà utilisée");
+        } else{
+            for(let i=0;i<tabCoord.length;i++){
+                let co = tabCoord[i];
+                let g = document.getElementById("case" + co[0] + "-" + co[1]);
+                let t = g.style.backgroundImage;
+                g.style.backgroundImage = "url(../Images/croixV.png), " + t;
+            }
+            socket.emit("tourFini", tabCoord);
         }
-        socket.emit("tourFini", tabCoord);
     }
 
     resultBomb(tab){
-
-        for(let i=0;i<tab.length;i++){
-            let co = tab[i];
-            let g = document.getElementById("case" + co[0] + "-" + co[1]);
-            let t = g.style.backgroundImage;
-            g.style.backgroundImage = "url(../Images/croixV.png), " + t;
+        if(tab == 1){
+            alert("Bombe déjà utilisé");
+        } else{
+            for(let i=0;i<tab.length;i++){
+                let co = tab[i];
+                let g = document.getElementById("case" + co[0] + "-" + co[1]);
+                let t = g.style.backgroundImage;
+                g.style.backgroundImage = "url(../Images/croixV.png), " + t;
+            }
+            socket.emit("tourFini", tab);
         }
-        socket.emit("tourFini", tab);
     }
 
     resRad(tab){
@@ -638,24 +644,20 @@
             switch (arme){
                 case 1:
                     socket.on("res", (coor,shot,des) => {
-                        console.log("1");
                         this.resultAttack(coor,shot,des);
                     });
                     break;
                 case 2:
-                    console.log("2");
                     socket.on("torp", (tabCoord) => {
                         this.resultTorp(tabCoord);
                     });
                     break;
                 case 3:
-                    console.log("3");
                     socket.on("radar", (tabR) => {
                         this.resRad(tabR);
                     })
                     break;
                 case 4:
-                    console.log("4");
                     socket.on("bomb", (tab) => {
                         this.resultBomb(tab);
                     })

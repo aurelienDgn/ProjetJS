@@ -160,6 +160,10 @@ class Game {
     }
 
     setB3J1(nb){
+        this.b3J1 = nb;
+    }
+
+    incB3J1(nb){
         this.b3J1 += nb;
     }
 
@@ -168,6 +172,10 @@ class Game {
     }
 
     setB4J1(nb){
+        this.b4J1 = nb;
+    }
+
+    incB4J1(nb){
         this.b4J1 += nb;
     }
 
@@ -176,6 +184,10 @@ class Game {
     }
 
     setB5J1(nb){
+        this.b5J1 = nb;
+    }
+
+    incB5J1(nb){
         this.b5J1 += nb;
     }
 
@@ -184,6 +196,10 @@ class Game {
     }
 
     setB6J1(nb){
+        this.b6J1 = nb;
+    }
+
+    incB6J1(nb){
         this.b6J1 += nb;
     }
 
@@ -192,6 +208,10 @@ class Game {
     }
 
     setB7J1(nb){
+        this.b7J1 = nb;
+    }
+
+    incB7J1(nb){
         this.b7J1 += nb;
     }
 
@@ -200,6 +220,10 @@ class Game {
     }
 
     setB3J2(nb){
+        this.b3J2 = nb;
+    }
+
+    incB3J2(nb){
         this.b3J2 += nb;
     }
 
@@ -208,6 +232,10 @@ class Game {
     }
 
     setB4J2(nb){
+        this.b4J2 = nb;
+    }
+
+    incB4J2(nb){
         this.b4J2 += nb;
     }
 
@@ -216,6 +244,10 @@ class Game {
     }
 
     setB5J2(nb){
+        this.b5J2 = nb;
+    }
+
+    incB5J2(nb){
         this.b5J2 += nb;
     }
 
@@ -224,6 +256,10 @@ class Game {
     }
 
     setB6J2(nb){
+        this.b6J2 = nb;
+    }
+
+    incB6J2(nb){
         this.b6J2 += nb;
     }
 
@@ -232,6 +268,10 @@ class Game {
     }
 
     setB7J2(nb){
+        this.b7J2 = nb;
+    }
+
+    incB7J2(nb){
         this.b7J2 += nb;
     }
 
