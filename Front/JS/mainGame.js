@@ -21,7 +21,7 @@ socket.on("result", (msgTab) => {
         game.setCase(co[0], co[1], 1, 1);
         let g = document.getElementById("case" + co[0] + "-" + co[1]);
         let t = g.style.backgroundImage;
-        g.style.backgroundImage = "url(../Images/image2.png), " + t;
+        g.style.backgroundImage = "url(../Images/logo.png), " + t;
       }
 
   }
