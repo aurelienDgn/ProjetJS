@@ -155,25 +155,6 @@
             this.batPlace[this.batActu] = true;
             this.nbBatPlace++;
 
-            switch(this.batActu){
-                case 3:
-                    document.getElementById("b1").classList.add("btn-dark");
-                    break;
-                case 4:
-                    document.getElementById("b2").classList.add("btn-dark");
-                    break;
-                case 5:
-                    document.getElementById("b3").classList.add("btn-dark");
-                    break;
-                case 6:
-                    document.getElementById("b4").classList.add("btn-dark");
-                    break;
-                case 7:
-                    document.getElementById("b5").classList.add("btn-dark");
-                    break;
-
-            }
-
             if(this.nbBatPlace == 5){
                 socket.emit("ship", this.grille);
             }
@@ -571,7 +552,7 @@
     /************************************ */
     resultAttack(coord, resultAtk, destroyed) {
 
-        //console.log("fct atkk");
+        console.log("fct atkk");
         let g = document.getElementById("case" + coord[0] + "-" + coord[1]);
         if (resultAtk == true) {
 
@@ -607,7 +588,7 @@
     resultTorp(tabCoord){
         if(tabCoord == 1){
             alert("Torpille déjà utilisée");
-        } else{
+        }else{
             for(let i=0;i<tabCoord.length;i++){
                 let co = tabCoord[i];
                 let g = document.getElementById("case" + co[0] + "-" + co[1]);
@@ -620,8 +601,8 @@
 
     resultBomb(tab){
         if(tab == 1){
-            alert("Bombe déjà utilisé");
-        } else{
+            alert("Bombe déjà utilisée");
+        }else{
             for(let i=0;i<tab.length;i++){
                 let co = tab[i];
                 let g = document.getElementById("case" + co[0] + "-" + co[1]);
@@ -663,20 +644,24 @@
             switch (arme){
                 case 1:
                     socket.on("res", (coor,shot,des) => {
+                        console.log("1");
                         this.resultAttack(coor,shot,des);
                     });
                     break;
                 case 2:
+                    console.log("2");
                     socket.on("torp", (tabCoord) => {
                         this.resultTorp(tabCoord);
                     });
                     break;
                 case 3:
+                    console.log("3");
                     socket.on("radar", (tabR) => {
                         this.resRad(tabR);
                     })
                     break;
                 case 4:
+                    console.log("4");
                     socket.on("bomb", (tab) => {
                         this.resultBomb(tab);
                     })

@@ -69,6 +69,12 @@ io.use(sharedsession(session, {
     autoSave: true
 }));
 
+// Détection de si nous sommes en production, pour sécuriser en https
+if (app.get('env') === 'production') {
+    app.set('trust proxy', 1) // trust first proxy
+    session.cookie.secure = true // serve secure cookies
+}
+
 // redirige vers la page d'accueil
 app.get("/", (req, res) => {
     res.sendFile(__dirname + '/Front/HTML/index.html');
@@ -117,12 +123,20 @@ app.get('/game', (req, res) => {
 });
 
 // Directement après la connexion d'un socket au serveur
-io.on('connect', (socket) => {
+io.on('connection', (socket) => {
 
     users[socket.id] = {
         inGame: null,
         player: null
     };
+
+    socket.on('message', (msg) => {
+        console.log(socket.handshake.session.username + ' : ' + msg);
+        //Envoie le message pour tous!
+        io.emit('new-message', socket.handshake.session.username + ' : ' + msg);
+        //Autre alternative : envoyer le message à tous les autres socket ormis celui qui envoie
+        //socket.broadcast.emit('new-message', msg);
+    });
 
     // Entre dans la salle d'attente, il faut attendre un deuxième joueur.
     socket.join('waitingRoom');
@@ -243,6 +257,10 @@ io.on('connect', (socket) => {
 
 
     /****************************************************************************/
+
+    let j1 = new Game();
+
+    let j2 = new Game();
 
     /*socket.on('test', function(){
         console.log(socket.handshake.session.player);
@@ -513,8 +531,6 @@ io.on('connect', (socket) => {
             }
             else {
                 console.log("Radar déjà utilisé");
-                tabR = 1;
-                socket.emit("radar", tabR);
                 //Afficher sur le front que le radar est déjà utilisé
             }
         }
@@ -556,7 +572,7 @@ io.on('connect', (socket) => {
                         case 4:
                             if (games[socket.handshake.session.room].getB4J2() <= 2) {
 
-                                games[socket.handshake.session.room].getB4J2(0);
+                                games[socket.handshake.session.room].setB4J2(0);
 
                                 for (let i = 0; i < 10; i++) {
                                     for (let j = 0; j < 10; j++) {
@@ -624,9 +640,9 @@ io.on('connect', (socket) => {
                     }
                 }
             } else {
+                console.log("Torpille déjà utlisé.");
                 tabCoord = 1;
-                socket.emit("torp", tabCoord);
-                //console.log("Torpille déjà utlisé.");
+                socket.emit("radar", tabCoord);
             }
         } else if (socket.handshake.session.player == 2) {
 
@@ -659,6 +675,7 @@ io.on('connect', (socket) => {
                         case 4:
                             if (games[socket.handshake.session.room].getB4J1() <= 2) {
 
+                                games[socket.handshake.session.room].setB4J1(0);
 
                                 for (let i = 0; i < 10; i++) {
                                     for (let j = 0; j < 10; j++) {
@@ -666,7 +683,6 @@ io.on('connect', (socket) => {
                                             games[socket.handshake.session.room].setCase(i, j, 1, 2);
                                             tabCoord[l] = [i, j];
                                             l++;
-                                            games[socket.handshake.session.room].setB4J1(0);
                                         }
                                     }
                                 }
@@ -727,11 +743,11 @@ io.on('connect', (socket) => {
                             break;
                             1
                     }
-                } 
-            } else {
-                tabCoord = 1;
-                socket.emit("torp", tabCoord);
-                console.log("Torpille déjà utlisé.");
+                } else {
+                    console.log("Torpille déjà utlisé.");
+                    tabCoord = 1;
+                    socket.emit("radar", tabCoord);
+                }
             }
         }
     }
@@ -752,6 +768,7 @@ io.on('connect', (socket) => {
                 let y = coord[1];
 
                 if (grilleAdv[x][y] != 0 && grilleAdv[x][y] != 1 && grilleAdv[x][y] != 2) {
+
 
                     switch (grilleAdv[x][y]) {
                         case 3:
@@ -886,7 +903,7 @@ io.on('connect', (socket) => {
                 //alert("Bombe à fragment déjà utilisé");
                 console.log("Bombe déjà utilisé");
                 tabBmb = 1;
-                socket.emit("bomb", tabBmb);
+                socket.emit("radar", tabBmb);
             }
         } else if (socket.handshake.session.player == 2) {
             if (games[socket.handshake.session.room].getBombeJ2() == false) {
@@ -898,6 +915,7 @@ io.on('connect', (socket) => {
                 let y = coord[1];
 
                 if (grilleAdv[x][y] != 0 && grilleAdv[x][y] != 1 && grilleAdv[x][y] != 2) {
+
 
                     switch (grilleAdv[x][y]) {
                         case 3:
@@ -920,7 +938,6 @@ io.on('connect', (socket) => {
                     tabBmb[l] = [x, y];
                     l++;
                     games[socket.handshake.session.room].setCase(x, y, 1, 2);
-
                 }
 
                 if (grilleAdv[x + 1][y] != 0 && grilleAdv[x + 1][y] != 1 && grilleAdv[x + 1][y] != 2) {
@@ -944,12 +961,13 @@ io.on('connect', (socket) => {
                             break;
                     }
                     //console.log("x+1 : "+[x+1,y]);
-                    tabBmb[l] = [x + 1, y];
+                    tabBmb[l] = [x + 1 + 1, y];
                     l++;
                     games[socket.handshake.session.room].setCase(x + 1, y, 1, 2);
                 }
 
                 if (grilleAdv[x - 1][y] != 0 && grilleAdv[x - 1][y] != 1 && grilleAdv[x - 1][y] != 2) {
+
 
                     switch (grilleAdv[x - 1][y]) {
                         case 3:
@@ -972,7 +990,6 @@ io.on('connect', (socket) => {
                     tabBmb[l] = [x - 1, y];
                     l++;
                     games[socket.handshake.session.room].setCase(x - 1, y, 1, 2);
-
                 }
 
                 if (grilleAdv[x][y + 1] != 0 && grilleAdv[x][y + 1] != 1 && grilleAdv[x][y + 1] != 2) {
@@ -995,7 +1012,7 @@ io.on('connect', (socket) => {
                             games[socket.handshake.session.room].incB7J1(-1);
                             break;
                     }
-                    console.log("y+1 : "+[x,y+1]);
+                    //console.log("y+1 : "+[x,y+1]);
                     tabBmb[l] = [x, y + 1];
                     l++;
                     games[socket.handshake.session.room].setCase(x, y + 1, 1, 2);
@@ -1028,14 +1045,13 @@ io.on('connect', (socket) => {
                 }
 
                 //console.log(tabBmb);
-                //console.log("Bombe " + tabBmb);
                 socket.emit("bomb", tabBmb);
 
             } else {
                 //alert("Bombe à fragment déjà utilisé");
-                tabBmb = 1;
-                socket.emit("bomb", tabBmb);
                 console.log("Bombe déjà utilisé");
+                tabBmb = 1;
+                socket.emit("radar", tabBmb);
             }
         }
     }
@@ -1083,35 +1099,25 @@ io.on('connect', (socket) => {
         if (socket.handshake.session.player == 1) {
             games[socket.handshake.session.room].setCanPlayJ1(false);
             games[socket.handshake.session.room].setCanPlayJ2(true);
-            //console.log("une atk vient d'être effectué par J1");
-
-
+            console.log("une atk vient d'être effectué par J1");
 
             socket.broadcast.emit('result', tabC);
 
         } else if (socket.handshake.session.player == 2) {
             games[socket.handshake.session.room].setCanPlayJ2(false);
             games[socket.handshake.session.room].setCanPlayJ1(true);
-            //console.log("une atk vient d'être effectué par J2");
-
-            /*console.log("B3J1 : "+games[socket.handshake.session.room].getB3J1());
-            console.log("B4J1 : "+games[socket.handshake.session.room].getB4J1());
-            console.log("B5J1 : "+games[socket.handshake.session.room].getB5J1());
-            console.log("B6J1 : "+games[socket.handshake.session.room].getB6J1());
-            console.log("B7J1 : "+games[socket.handshake.session.room].getB7J1());*/
+            console.log("une atk vient d'être effectué par J2");
 
             socket.broadcast.emit('result', tabC);
         }
 
         // Mettre faire la défense de celui à qui ce n'était pas le tour
-        
-        //Lance fonction finish pour voir si la partie est terminé
+
+        //Lancer fonction isfinish pour voir si la partie est terminé
         if(finish()){
             console.log("partie finie");
             io.emit("gameFinish");
         }
-
-        
     })
 
     socket.on("canPlay", function () {

@@ -7,31 +7,26 @@ listeners.initArme();
 listeners.initRota();
 listeners.bat();
 
-
 socket.on("result", (msgTab) => {
 
-  console.log("zee ", msgTab);
-  if (msgTab =! null && msgTab != -1) {
-    console.log("len : "+msgTab.length);
-      
-      for (let i = 0; i < msgTab.length; i++) {
-        console.log("normally");
+    let g = document.getElementById("case" + msgTab[0][0] + "-" + msgTab[0][1]);
+    console.log(g)
+    let t = g.style.backgroundImage;
+    g.style.backgroundImage = "url(../Images/croixR.png), " + t;
 
-        let co = msgTab[i];
-        game.setCase(co[0], co[1], 1, 1);
-        let g = document.getElementById("case" + co[0] + "-" + co[1]);
-        let t = g.style.backgroundImage;
-        g.style.backgroundImage = "url(../Images/logo.png), " + t;
+    console.log("zee ", msgTab);
+    if (msgTab != null && msgTab != -1) {
+      if(msgTab.length > 0){
+        console.log("MSGTAB :", msgTab[0][0], msgTab[0][1]);
+        game.setCase(msgTab[0][0], msgTab[0][1],1);
       }
+    }
+    // let it = document.getElementById("dfd");
 
-  }
-  // let it = document.getElementById("dfd");
-
-  // for(let i=0;i<msgTab.length;i++){
-  //     console.log("POOOP ", msgTab[i]+"\n");
-  // }
+    // for(let i=0;i<msgTab.length;i++){
+    //     console.log("POOOP ", msgTab[i]+"\n");
+    // }
 })
-
 socket.on("gameFinish", function(){
   alert("PARTIE FINITO");
 })

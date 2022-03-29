@@ -219,12 +219,12 @@ class Game {
         return this.b3J2;
     }
 
-    setB3J2(nb){
-        this.b3J2 = nb;
-    }
-
     incB3J2(nb){
         this.b3J2 += nb;
+    }
+
+    setB3J2(nb){
+        this.b3J2 = nb;
     }
 
     getB4J2(){

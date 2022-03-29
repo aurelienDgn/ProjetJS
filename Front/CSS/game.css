@@ -13,6 +13,13 @@ h1 a
     margin: 0px 30px;
 }
 
+span#username{
+    font-family: 'Permanent Marker';
+    color: #A67D52;
+    font-size: 2rem;
+    margin: auto;
+}
+
 h1 a:hover{
     text-decoration: none;
     color: #9b6c3a;
@@ -20,6 +27,10 @@ h1 a:hover{
 
 body{
     background-color: rgba(100, 202, 211, 0.5);
+}
+
+#bateau{
+    margin-right: 15%;
 }
 
 main{

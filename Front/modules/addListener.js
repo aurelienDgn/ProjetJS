@@ -1,5 +1,7 @@
 let listeners = (function(){
 
+
+
     return{
 
         addClick(elt, coord){
@@ -62,6 +64,7 @@ let listeners = (function(){
             game.setCanHover(true);
             game.setActuSize(bateau1.getTaille());
             game.setBatActu(3);
+            document.getElementById("b1").disabled = true;
         });
 
         document.getElementById("b2").addEventListener("click", function(){
@@ -70,6 +73,7 @@ let listeners = (function(){
             game.setCanHover(true);
             game.setActuSize(bateau2.getTaille());
             game.setBatActu(4);
+            document.getElementById("b2").disabled = true;
         })
 
         document.getElementById("b3").addEventListener("click", function(){
@@ -78,6 +82,7 @@ let listeners = (function(){
             game.setCanHover(true);
             game.setActuSize(bateau3.getTaille());
             game.setBatActu(5);
+            document.getElementById("b3").disabled = true;
         })
 
         document.getElementById("b4").addEventListener("click", function(){
@@ -86,6 +91,7 @@ let listeners = (function(){
             game.setCanHover(true);
             game.setActuSize(bateau4.getTaille());
             game.setBatActu(6);
+            document.getElementById("b4").disabled = true;
         })
 
         document.getElementById("b5").addEventListener("click", function(){
@@ -94,6 +100,7 @@ let listeners = (function(){
             game.setCanHover(true);
             game.setActuSize(bateau5.getTaille());
             game.setBatActu(7);
+            document.getElementById("b5").disabled = true;
         })
     }
 
