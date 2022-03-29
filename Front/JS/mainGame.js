@@ -15,7 +15,7 @@ socket.on("result", (msgTab) => {
     g.style.backgroundImage = "url(../Images/croixR.png), " + t;
 
     console.log("zee ", msgTab);
-    if (msgTab != -1) {
+    if (msgTab != null && msgTab != -1) {
       if(msgTab.length > 0){
         console.log("MSGTAB :", msgTab[0][0], msgTab[0][1]);
         game.setCase(msgTab[0][0], msgTab[0][1],1);
