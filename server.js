@@ -69,6 +69,12 @@ io.use(sharedsession(session, {
     autoSave: true
 }));
 
+// Détection de si nous sommes en production, pour sécuriser en https
+if (app.get('env') === 'production') {
+    app.set('trust proxy', 1) // trust first proxy
+    session.cookie.secure = true // serve secure cookies
+}
+
 // redirige vers la page d'accueil
 app.get("/", (req, res) => {
     res.sendFile(__dirname + '/Front/HTML/index.html');
@@ -117,12 +123,20 @@ app.get('/game', (req, res) => {
 });
 
 // Directement après la connexion d'un socket au serveur
-io.on('connect', (socket) => {
+io.on('connection', (socket) => {
 
     users[socket.id] = {
         inGame: null,
         player: null
     };
+
+    socket.on('message', (msg) => {
+        console.log(socket.handshake.session.username + ' : ' + msg);
+        //Envoie le message pour tous!
+        io.emit('new-message', socket.handshake.session.username + ' : ' + msg);
+        //Autre alternative : envoyer le message à tous les autres socket ormis celui qui envoie
+        //socket.broadcast.emit('new-message', msg);
+    });
 
     // Entre dans la salle d'attente, il faut attendre un deuxième joueur.
     socket.join('waitingRoom');
