@@ -50,6 +50,7 @@ main{
 
 .boat{
     height: 80px;
+    margin-right: 50px;
 }
 
 h2{
@@ -61,10 +62,11 @@ h2{
 h3{
     font-family: 'Montserrat', sans-serif;
     margin-left: 20px;
+    margin-top: 60px;
 }
 
 main p{
-    margin-left: 40px;
+    font-size: 1.3rem;
 }
 
 footer{
