@@ -155,6 +155,25 @@
             this.batPlace[this.batActu] = true;
             this.nbBatPlace++;
 
+            switch(this.batActu){
+                case 3:
+                    document.getElementById("b1").classList.add("btn-dark");
+                    break;
+                case 4:
+                    document.getElementById("b2").classList.add("btn-dark");
+                    break;
+                case 5:
+                    document.getElementById("b3").classList.add("btn-dark");
+                    break;
+                case 6:
+                    document.getElementById("b4").classList.add("btn-dark");
+                    break;
+                case 7:
+                    document.getElementById("b5").classList.add("btn-dark");
+                    break;
+
+            }
+
             if(this.nbBatPlace == 5){
                 socket.emit("ship", this.grille);
             }
