@@ -31,21 +31,24 @@ let listeners = (function(){
 
             document.getElementById("torpille").addEventListener('click', function(){
                 game.setArme(2);
+                document.getElementById("torpille").disabled = true;
             });
 
             document.getElementById("radar").addEventListener('click', function(){
                 game.setArme(3);
+                document.getElementById("radar").disabled = true;
             });
 
             document.getElementById("bombe").addEventListener('click', function(){
                 game.setArme(4);
+                document.getElementById("bombe").disabled = true;
             });
         },
 
         initRota(){
             document.getElementById("rot").addEventListener("click", function(){
                 game.changeSens();
-            })
+            });
         },
 
         bat(){

@@ -516,8 +516,8 @@ io.on('connection', (socket) => {
                 let x = coord[0] - 1;
                 let y = coord[1] - 1;
 
-                for (let i = 0; i < 3; i++) {
-                    for (let j = 0; j < 3; j++) {
+                for (let i = 0; i <= 2; i++) {
+                    for (let j = 0; j <= 2; j++) {
                         console.log("Case : " + grilleAdv[x + i][y + j]);
                         if (grilleAdv[x + i][y + j] != 0 && grilleAdv[x + i][y + j] != 1 && grilleAdv[x + i][y + j] != 2) {
                             console.log("y'a un bateau en " + [x + i] + "-" + [y + j]);
@@ -1100,6 +1100,7 @@ io.on('connection', (socket) => {
             games[socket.handshake.session.room].setCanPlayJ1(false);
             games[socket.handshake.session.room].setCanPlayJ2(true);
             console.log("une atk vient d'être effectué par J1");
+            io.emit('tour2',socket.handshake.session.username);
 
             socket.broadcast.emit('result', tabC);
 
@@ -1107,6 +1108,7 @@ io.on('connection', (socket) => {
             games[socket.handshake.session.room].setCanPlayJ2(false);
             games[socket.handshake.session.room].setCanPlayJ1(true);
             console.log("une atk vient d'être effectué par J2");
+            io.emit('tour1',socket.handshake.session.username);
 
             socket.broadcast.emit('result', tabC);
         }
