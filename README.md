@@ -1,4 +1,4 @@
 # ProjetJS
-ProjetJS
+BattleCheap fait par l'équipe des Lions aka la meilleure team
 
-## Ce projet va être fou !!
+## Ce projet est fou grâce au beccardo!!
