@@ -28,14 +28,14 @@ socket.on("result", (msgTab) => {
   // }
 })
 
-socket.on('tour1', (data) => {
+socket.on('tour1', () => {
   if (Alert == false){
     alert("AU TOUR DE J2");
     Alert = true;
   }
 });
 
-socket.on('tour2', (data) => {
+socket.on('tour2', () => {
   if (Alert == false){
     alert("AU TOUR DE J1");
     Alert = true;
