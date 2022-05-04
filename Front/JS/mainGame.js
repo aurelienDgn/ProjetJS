@@ -1,4 +1,3 @@
-let user = document.getElementById("username");
 let Alert = false;
 let game = new G();
 createGrid.createTable((document.getElementById('grid'))); // Rempli tableau HTML
@@ -29,18 +28,16 @@ socket.on("result", (msgTab) => {
   // }
 })
 
-socket.on('tour1', (data) => {
+socket.on('tour1', () => {
   if (Alert == false){
-    document.getElementById("username").innerHTML = data;
-    alert("AU TOUR DE ", data);
+    alert("AU TOUR DE J2");
     Alert = true;
   }
 });
 
-socket.on('tour2', (data) => {
+socket.on('tour2', () => {
   if (Alert == false){
-    document.getElementById("username").innerHTML = data;
-    alert("AU TOUR DE ", data);
+    alert("AU TOUR DE J1");
     Alert = true;
   }
 });
